@@ -1,0 +1,7 @@
+<!-- See http://www.sublimetext.com/docs/snippets for more information -->
+<snippet>
+    <content><![CDATA[${1:FIELDNAME} = forms.FileField($2)]]></content>
+    <tabTrigger>ffile</tabTrigger>
+    <scope>source.python</scope>
+    <description>FileField (ffile)</description>
+</snippet>

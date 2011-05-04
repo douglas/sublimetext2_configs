@@ -1,0 +1,20 @@
+{
+	"auto_indent": true,
+	"auto_match_enabled": true,
+	"color_scheme": "Packages/Color Scheme - Default/Twilight.tmTheme",
+	"draw_minimap_border": true,
+	"font_face": "Droid Sans Mono",
+	"font_options":
+	[
+		"subpixel_antialias"
+	],
+	"font_size": 11.5,
+	"highlight_line": true,
+	"indent_subsequent_lines": true,
+	"tab_size": 4,
+	"translate_tabs_to_spaces": true,
+	"trim_automatic_white_space": true,
+	"use_tab_stops": true,
+	"word_wrap": false,
+	"sublimelint": true
+}

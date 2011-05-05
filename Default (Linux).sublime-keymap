@@ -1,0 +1,5 @@
+[
+    { "keys": ["ctrl+alt+/"], "command": "goto_python_definition"},
+    { "keys": ["ctrl+alt+,"], "command": "unexpand_tabs"},
+    { "keys": ["ctrl+alt+."], "command": "expand_tabs"}
+]

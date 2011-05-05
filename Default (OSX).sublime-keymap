@@ -1,0 +1,5 @@
+[
+    { "keys": ["super+ctrl+/"], "command": "goto_python_definition"},
+    { "keys": ["super+ctrl+,"], "command": "unexpand_tabs"},
+    { "keys": ["super+ctrl+."], "command": "expand_tabs"}
+]

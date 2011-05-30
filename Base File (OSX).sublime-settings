@@ -22,5 +22,6 @@
     "translate_tabs_to_spaces": true,
     "trim_automatic_white_space": true,
     "use_tab_stops": true,
+    "detect_indentation": false,
     "word_wrap": false
 }

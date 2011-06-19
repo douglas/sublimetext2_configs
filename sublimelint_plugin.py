@@ -9,26 +9,24 @@ Questions: andre.roberge (at) gmail.com
 '''
 import os
 import time
-import thread
+import threading
 
 import sublime
 import sublime_plugin
 
 from sublimelint.loader import Loader
 
-# TODO: experiment with including non-ascii characters - the Python linter
-# apparently raises some exceptions and may stop because of that. 
-# If so, fix it!
+LINTERS = {}     # mapping of language name to linter module
+QUEUE = {}       # views waiting to be processed by linter
+ERRORS = {}      # error messages on given line obtained from linter; they are
+                 # displayed in the status bar when cursor is on line with error
+VIOLATIONS = {}  # violation messages, they are displayed in the status bar
+WARNINGS = {}    # warning messages, they are displayed in the status bar
+HELP = []        # collects all "help" (docstring, etc.) information
+MOD_LOAD = Loader(os.getcwd(), LINTERS, HELP)  # utility to load (and reload
+                 # if necessary) linter modules [useful when working on plugin]
 
-LINTERS = {} # mapping of language name to linter module
-QUEUE = {}     # views waiting to be processed by linter
-ERRORS = {} # error messages on given line obtained from linter; they are
-            # displayed in the status bar when cursor is on line with error
-HELP = []   # collects all "help" (docstring, etc.) information
-MOD_LOAD = Loader(os.getcwd(), LINTERS, HELP) # utility to load (and reload 
-            # if necessary) linter modules [useful when working on plugin]
-
-HELP.insert(0, 
+HELP.insert(0,
 '''SublimeLint help
 =================
 
@@ -37,7 +35,7 @@ lines of code which are deemed to contain (potential) errors. It also
 supports highlighting special annotations (for example: TODO) so that they
 can be quickly located.
 
-To enable a background linter to run by default 
+To enable a background linter to run by default
 (provided one exists for the language/syntax the file being viewed), set
 the user preference "sublimelint" to true.   If you find that this slows
 down the UI too much, you can unset this user preference (or set it to
@@ -72,11 +70,75 @@ to your theme (adapting the color to your liking):
             <key>settings</key>
             <dict>
                 <key>foreground</key>
-                <string>#FFFFAA</string>
+                <string>#FFFFAAE0</string>
             </dict>
         </dict>
-
-
+        <dict>
+            <key>name</key>
+            <string>Sublimelint Outline</string>
+            <key>scope</key>
+            <string>sublimelint.illegal</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#ff3A4ACC</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Sublimelint Underline</string>
+            <key>scope</key>
+            <string>invalid.illegal</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#FF0000</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Sublimelint Warning Outline</string>
+            <key>scope</key>
+            <string>sublimelint.warning</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#DF940055</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Sublimelint Warning Underline</string>
+            <key>scope</key>
+            <string>invalid.warning</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#DF9400</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Sublimelint Violation Outline</string>
+            <key>scope</key>
+            <string>sublimelint.violation</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#ffffff33</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Sublimelint Violation Underline</string>
+            <key>scope</key>
+            <string>invalid.violation</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#999999</string>
+            </dict>
+        </dict>
 
 ==================================================================
 
@@ -87,11 +149,26 @@ options:
 '''
 )
 
+
 def help_collector(fn):
     '''decorator used to automatically extract docstrings and collect them
     for future display'''
     HELP.append(fn.__doc__)
     return fn
+
+
+def update_statusbar(view):
+    vid = view.id()
+    lineno = view.rowcol(view.sel()[0].end())[0]
+    if vid in ERRORS and lineno in ERRORS[vid]:
+        view.set_status('Linter', '; '.join(ERRORS[vid][lineno]))
+    elif vid in VIOLATIONS and lineno in VIOLATIONS[vid]:
+        view.set_status('Linter', '; '.join(VIOLATIONS[vid][lineno]))
+    elif vid in WARNINGS and lineno in WARNINGS[vid]:
+        view.set_status('Linter', '; '.join(WARNINGS[vid][lineno]))
+    else:
+        view.erase_status('Linter')
+
 
 def background_run(linter, view):
     '''run a linter on a given view if settings is set appropriately'''
@@ -101,99 +178,224 @@ def background_run(linter, view):
     if view.settings().get('sublimelint_notes'):
         highlight_notes(view)
 
+
 def run_once(linter, view):
     '''run a linter on a given view regardless of user setting'''
     if linter == LINTERS["annotations"]:
         highlight_notes(view)
         return
     vid = view.id()
-    text = view.substr(sublime.Region(0, view.size()))
+    text = view.substr(sublime.Region(0, view.size())).encode('utf-8')
     if view.file_name():
-        filename = view.file_name()
+        filename = view.file_name()  # os.path.split(view.file_name())[-1]
     else:
         filename = 'untitled'
-    underlines, lines, ERRORS[vid] = linter.run(text, view, filename)
-    add_lint_marks(view, underlines, lines)
+    lines, error_underlines, violation_underlines, warning_underlines, ERRORS[vid], VIOLATIONS[vid], WARNINGS[vid] = linter.run(text, view, filename)
+    add_lint_marks(view, lines, error_underlines, violation_underlines, warning_underlines)
+    update_statusbar(view)
 
 
-def add_lint_marks(view, underlines, lines):
+def add_lint_marks(view, lines, error_underlines, violation_underlines, warning_underlines):
     '''Adds lint marks to view.'''
+    vid = view.id()
     erase_lint_marks(view)
-
-    highlight_theme_scope = "invalid.illegal"
-    if underlines:
-        view.add_regions('lint-underline', underlines, highlight_theme_scope, 
+    if warning_underlines:
+        view.add_regions('lint-underline-warning', warning_underlines, 'invalid.warning',
+                                            sublime.DRAW_EMPTY_AS_OVERWRITE)
+    if violation_underlines:
+        view.add_regions('lint-underline-violation', violation_underlines, 'invalid.violation',
+                                            sublime.DRAW_EMPTY_AS_OVERWRITE)
+    if error_underlines:
+        view.add_regions('lint-underline', error_underlines, 'invalid.illegal',
                                             sublime.DRAW_EMPTY_AS_OVERWRITE)
     if lines:
-        outlines = [view.full_line(view.text_point(nb, 0)) for nb in lines]
-        view.add_regions('lint-outlines', outlines, highlight_theme_scope, 
-                                                    sublime.DRAW_OUTLINED)
+        warning_outlines = []
+        violation_outlines = []
+        error_outlines = []
+        for line in lines:
+            if line in WARNINGS[vid]:
+                warning_outlines.append(view.full_line(view.text_point(line, 0)))
+            if line in VIOLATIONS[vid]:
+                violation_outlines.append(view.full_line(view.text_point(line, 0)))
+            if line in ERRORS[vid]:
+                error_outlines.append(view.full_line(view.text_point(line, 0)))
+        if warning_outlines:
+            view.add_regions('lint-outlines-warning', warning_outlines,
+                'sublimelint.warning', sublime.DRAW_OUTLINED)
+        if violation_outlines:
+            view.add_regions('lint-outlines-violation', violation_outlines,
+                'sublimelint.violation', sublime.DRAW_OUTLINED)
+        if error_outlines:
+            view.add_regions('lint-outlines', error_outlines,
+                'sublimelint.illegal', sublime.DRAW_OUTLINED)
+
 
 def erase_lint_marks(view):
     '''erase all "lint" error marks from view'''
     view.erase_regions('lint-underline')
+    view.erase_regions('lint-underline-violation')
+    view.erase_regions('lint-underline-warning')
     view.erase_regions('lint-outlines')
+    view.erase_regions('lint-outlines-violation')
+    view.erase_regions('lint-outlines-warning')
 
 
 def select_linter(view):
-    '''selects the appropriate linter to use based on language in 
+    '''selects the appropriate linter to use based on language in
        current view'''
     for language in LINTERS:
         if language in view.settings().get("syntax"):
             return LINTERS[language]
     return None
 
+
 def highlight_notes(view):
     '''highlight user-specified annotations in a file'''
     view.erase_regions('annotations')
     text = view.substr(sublime.Region(0, view.size()))
-    
     regions = LINTERS["annotations"].run(text, view)
     if regions:
-        view.add_regions('annotations', regions, "sublimelint.annotations", 
+        view.add_regions('annotations', regions, "sublimelint.annotations",
                                             sublime.DRAW_EMPTY_AS_OVERWRITE)
+
 
 def queue_linter(view):
     '''Put the current view in a queue to be examined by a linter'''
     if select_linter(view) is None:
-        erase_lint_marks(view)#may have changed file type and left marks behind
-    #user annotations could be present in all types of files
-    QUEUE[view.id()] = view
+        erase_lint_marks(view)  # may have changed file type and left marks behind
+
+    # user annotations could be present in all types of files
+    def _update_view(view):
+        linter = select_linter(view)
+        try:
+            background_run(linter, view)
+        except RuntimeError, excp:
+            print excp
+    queue(view, _update_view, 400, 1000)
 
 
 def background_linter():
-    '''An infinite loop meant to periodically
-       update the view after running the linter in a background thread
-       so as to not slow down the UI too much.'''
-    while True:
-        time.sleep(0.5)
-        for vid in dict(QUEUE):
-            _view = QUEUE[vid]
-            def _update_view():
-                linter = select_linter(_view)
-                try:
-                    background_run(linter, _view)
-                except RuntimeError, excp:
-                    print excp
-            sublime.set_timeout(_update_view, 100)
-            try: 
-                del QUEUE[vid]
-            except: 
-                pass
+    __lock_.acquire()
+    try:
+        views = QUEUE.values()
+        QUEUE.clear()
+    finally:
+        __lock_.release()
+    for view, callback, args, kwargs in views:
+        def _callback():
+            callback(view, *args, **kwargs)
+        sublime.set_timeout(_callback, 0)
+
+################################################################################
+# Queue dispatcher system:
+
+queue_dispatcher = background_linter
+queue_thread_name = "background linter"
+MAX_DELAY = 10
 
 
-# only start the thread once - otherwise the plugin will get laggy 
-# when saving it often
-if not '__active_linter_thread' in globals():
-    __active_linter_thread = True
-    thread.start_new_thread(background_linter, ())
+def queue_loop():
+    '''An infinite loop running the linter in a background thread meant to
+        update the view after user modifies it and then does no further
+        modifications for some time as to not slow down the UI with linting.'''
+    global __signaled_, __signaled_first_
+    while __loop_:
+        #print 'acquire...'
+        __semaphore_.acquire()
+        __signaled_first_ = 0
+        __signaled_ = 0
+        #print 'DISPATCHING!', len(QUEUE)
+        queue_dispatcher()
 
+
+def queue(view, callback, timeout, busy_timeout=None, preemptive=False, args=[], kwargs={}):
+    global __signaled_, __signaled_first_
+    now = time.time()
+    __lock_.acquire()
+    try:
+        QUEUE[view.id()] = (view, callback, args, kwargs)
+        if now < __signaled_ + timeout * 4:
+            timeout = busy_timeout or timeout
+
+        __signaled_ = now
+        _delay_queue(timeout, preemptive)
+        if not __signaled_first_:
+            __signaled_first_ = __signaled_
+            #print 'first',
+        #print 'queued in', (__signaled_ - now)
+    finally:
+        __lock_.release()
+
+
+def _delay_queue(timeout, preemptive):
+    global __signaled_, __queued_
+    now = time.time()
+    if not preemptive and now <= __queued_ + 0.01:
+        return  # never delay queues too fast (except preemptively)
+    __queued_ = now
+    _timeout = float(timeout) / 1000
+    if __signaled_first_:
+        if MAX_DELAY > 0 and now - __signaled_first_ + _timeout > MAX_DELAY:
+            _timeout -= now - __signaled_first_
+            if _timeout < 0:
+                _timeout = 0
+            timeout = int(round(_timeout * 1000, 0))
+    new__signaled_ = now + _timeout - 0.01
+    if __signaled_ >= now - 0.01 and (preemptive or new__signaled_ >= __signaled_ - 0.01):
+        __signaled_ = new__signaled_
+        #print 'delayed to', (preemptive, __signaled_ - now)
+
+        def _signal():
+            if time.time() < __signaled_:
+                return
+            __semaphore_.release()
+        sublime.set_timeout(_signal, timeout)
+
+
+def delay_queue(timeout):
+    __lock_.acquire()
+    try:
+        _delay_queue(timeout, False)
+    finally:
+        __lock_.release()
+
+
+# only start the thread once - otherwise the plugin will get laggy
+# when saving it often.
+__semaphore_ = threading.Semaphore(0)
+__lock_ = threading.Lock()
+__queued_ = 0
+__signaled_ = 0
+__signaled_first_ = 0
+
+# First finalize old standing threads:
+__loop_ = False
+__pre_initialized_ = False
+
+
+def queue_finalize(timeout=None):
+    global __pre_initialized_
+    for thread in threading.enumerate():
+        if thread.isAlive() and thread.name == queue_thread_name:
+            __pre_initialized_ = True
+            thread.__semaphore_.release()
+            thread.join(timeout)
+queue_finalize()
+
+# Initialize background thread:
+__loop_ = True
+__active_linter_thread = threading.Thread(target=queue_loop, name=queue_thread_name)
+__active_linter_thread.__semaphore_ = __semaphore_
+__active_linter_thread.start()
+
+################################################################################
 
 UNRECOGNIZED = '''
 * Unrecognized option * :  %s
 ==============================================
 
 '''
+
 
 class Lint(sublime_plugin.TextCommand):
     '''command to interact with linters'''
@@ -203,7 +405,7 @@ class Lint(sublime_plugin.TextCommand):
         self.help_called = False
 
     def run_(self, name):
-        '''method called by default via view.run_command; 
+        '''method called by default via view.run_command;
            used to dispatch to appropriate method'''
         if name is None:
             self.help_()
@@ -247,7 +449,7 @@ class Lint(sublime_plugin.TextCommand):
         help_view, _id = self.view_in_tab("Sublime help", '\n'.join(HELP),
                                     "Packages/Markdown/Markdown.tmLanguage")
         help_view.set_read_only(_id)
-    
+
     def view_in_tab(self, title, text, file_type):
         '''Helper function to display information in a tab.
         '''
@@ -262,7 +464,7 @@ class Lint(sublime_plugin.TextCommand):
         tab.insert(ed, 0, text)
         tab.end_edit(ed)
         return tab, _id
-    
+
     @help_collector
     def reset(self):
         '''* view.run_command("lint", "reset")
@@ -293,12 +495,13 @@ class Lint(sublime_plugin.TextCommand):
             self.view.settings().set('sublimelint', None)
         run_once(LINTERS[name], self.view)
 
+
 class Annotations(Lint):
     '''Commands to extract annotations and display them in
        a file
     '''
     def run_(self, name):
-        '''method called by default via view.run_command; 
+        '''method called by default via view.run_command;
            used to dispatch to appropriate method'''
         if name is None:
             self.extract_from_current_view()
@@ -318,13 +521,13 @@ class Annotations(Lint):
             HELP.insert(0, UNRECOGNIZED % name)
             self.help()
             del HELP[0]
-    
+
     def extract_from_current_view(self):
         text = self.view.substr(sublime.Region(0, self.view.size()))
         filename = self.view.file_name()
         notes = LINTERS["annotations"].extract_annotations(text, self.view, filename)
         _, filename = os.path.split(filename)
-        annotations_view, _id = self.view_in_tab("Annotations from %s" % 
+        annotations_view, _id = self.view_in_tab("Annotations from %s" %
                                                     filename, notes,
                                                 "Packages/sublime_orgmode/orgmode.tmLanguage")
 
@@ -338,12 +541,12 @@ class BackgroundLinter(sublime_plugin.EventListener):
     def on_modified(self, view):
         queue_linter(view)
         return
-    
+
     def on_load(self, view):
         linter = select_linter(view)
         if linter:
             background_run(linter, view)
-    
+
     def on_post_save(self, view):
         for name, module in LINTERS.items():
             if module.__file__ == view.file_name():
@@ -351,11 +554,7 @@ class BackgroundLinter(sublime_plugin.EventListener):
                 MOD_LOAD.reload_module(module)
                 break
         queue_linter(view)
-    
+
     def on_selection_modified(self, view):
-        vid = view.id()
-        lineno = view.rowcol(view.sel()[0].end())[0]
-        if vid in ERRORS and lineno in ERRORS[vid]:
-            view.set_status('Linter', '; '.join(ERRORS[vid][lineno]))
-        else:
-            view.erase_status('Linter')
+        delay_queue(1000)  # on movement, delay queue (to make movement responsive)
+        update_statusbar(view)

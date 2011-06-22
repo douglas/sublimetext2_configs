@@ -1,6 +1,5 @@
 [
     { "keys": ["super+ctrl+/"], "command": "goto_python_definition"},
-    { "button": "button1", "modifiers": ["super"], "command": "goto_python_definition", "press_command": "drag_select" },
     { "keys": ["super+ctrl+,"], "command": "unexpand_tabs"},
     { "keys": ["super+ctrl+."], "command": "expand_tabs"},
     { "keys": ["ctrl+."], "command": "close_tag" },

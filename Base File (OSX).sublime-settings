@@ -4,12 +4,12 @@
 	"color_scheme": "Packages/User/DouglasCasts.tmTheme",
 	"detect_indentation": false,
 	"draw_minimap_border": true,
-	"font_face": "Menlo",
+	"font_face": "UbuntuBeta Mono",
 	"font_options":
 	[
 		"subpixel_antialias"
 	],
-	"font_size": 14,
+	"font_size": 16,
 	"gutter": true,
 	"highlight_line": true,
 	"indent_subsequent_lines": true,
@@ -17,7 +17,8 @@
 	[
 		80
 	],
-	"sublimelint": true,
+    "ensure_newline_at_eof_on_save": true,
+	"sublimelint": false,
 	"tab_completion": true,
 	"tab_size": 4,
 	"translate_tabs_to_spaces": true,

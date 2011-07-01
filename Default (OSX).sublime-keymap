@@ -3,5 +3,6 @@
     { "keys": ["super+ctrl+,"], "command": "unexpand_tabs"},
     { "keys": ["super+ctrl+."], "command": "expand_tabs"},
     { "keys": ["ctrl+."], "command": "close_tag" },
-    { "keys": ["ctrl+,"], "command": "validate" }
+    { "keys": ["ctrl+,"], "command": "validate" },
+    { "keys": ["ctrl+shift+u"], "command": "web_colors" }
 ]

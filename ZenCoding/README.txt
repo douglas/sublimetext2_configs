@@ -1,0 +1,1 @@
+Place your my_zen_settings.py under your user folder.

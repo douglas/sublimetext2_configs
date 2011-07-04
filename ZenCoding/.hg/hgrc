@@ -1,0 +1,2 @@
+[paths]
+default = ssh://hg@bitbucket.org/sublimator/sublime-2-zencoding

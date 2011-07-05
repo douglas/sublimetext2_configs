@@ -261,7 +261,6 @@ class ZenListener(sublime_plugin.EventListener):
                     oq_debug('handler: %r prefix: %r' % c)
                     oq_debug('pos: %r scope: %r' % (pos, view.syntax_name(pos)))
 
-
                     completions = handler(view, prefix, pos)
                     oq_debug('completions: %r' % completions)
                     if completions: return completions
@@ -274,7 +273,10 @@ class ZenListener(sublime_plugin.EventListener):
             if abbr:
                 result = expand_abbr(abbr)
                 oq_debug('expand_abbr abbr: %r result: %r' % (abbr, result))
-                return [(abbr, result if '<' not in result else abbr, result)]
+
+                if result:
+                    return [
+                        (abbr, result if '<' not in result else abbr, result)]
 
         except ZenInvalidAbbreviation:
             pass
@@ -297,8 +299,8 @@ class ZenListener(sublime_plugin.EventListener):
                                       # generally start with first letter
                                       p.strip('-').startswith(prefix[0].lower()) ]
 
-            oq_debug('css_property prefix: %r properties: %r' % ( prefix,
-                                                                  properties ))
+            oq_debug('css_property exact: %r prefix: %r properties: %r' % ( 
+                bool(exacts), prefix, properties ))
 
             return [ ((prefix, ) if prefix else ()) + (v, '%s:$1;' %  v)
                                  for v in properties ]

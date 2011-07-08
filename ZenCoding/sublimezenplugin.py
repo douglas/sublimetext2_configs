@@ -37,6 +37,7 @@ from zencoding.html_matcher import last_match
 ################################### CONSTANTS ##################################
 
 HTML                      = 'text.html - source'
+XML                       = 'text.xml'
 
 HTML_INSIDE_TAG_ANYWHERE  = 'text.html meta.tag'
 HTML_INSIDE_TAG           = 'text.html meta.tag - string - meta.scope.between-tag-pair.html -punctuation.definition.tag.begin.html'
@@ -44,16 +45,18 @@ HTML_INSIDE_TAG_ATTRIBUTE = 'text.html meta.tag string'
 
 HTML_NOT_INSIDE_TAG       = 'text.html - meta.tag'
 
-CSS          = 'source.css'
-CSS_PROPERTY = 'source.css meta.property-list.css - meta.property-value.css'
-CSS_SELECTOR = 'source.css meta.selector.css, source.css - meta'
+CSS          = 'source.css, source.scss'
+CSS_PROPERTY = 'meta.property-list.css - meta.property-value.css'
+CSS_SELECTOR = 'meta.selector.css, source.css - meta, source.scss - meta'
 
-CSS_PROPERTY_NAME =  u'source.css meta.property-list.css meta.property-name.css'
+CSS_PROPERTY_NAME =  u'meta.property-list.css meta.property-name.css'
 
-CSS_PREFIXER = 'source.css meta.property-list.css, meta.selector.css'
-CSS_VALUE    = 'source.css meta.property-list.css meta.property-value.css'
+CSS_PREFIXER = 'meta.property-list.css, meta.selector.css'
+CSS_VALUE    = 'meta.property-list.css meta.property-value.css'
 
-CSS_ENTITY_SELECTOR = 'source.css meta.selector.css entity.other.attribute-name'
+CSS_ENTITY_SELECTOR = 'meta.selector.css entity.other.attribute-name'
+
+ZEN_SCOPE = ', '.join([HTML, XML, CSS])
 
 #################################### AUTHORS ###################################
 
@@ -180,14 +183,13 @@ class ZenCssMnemonic(sublime_plugin.WindowCommand):
 
 class ZenListener(sublime_plugin.EventListener):
     def correct_syntax(self, view):
-        return view.match_selector( view.sel()[0].b,
-                                    'text.html, text.xml, source.css' )
+        return view.match_selector( view.sel()[0].b, ZEN_SCOPE )
 
     def css_selectors(self, view, prefix, pos):
         elements = [ (v, v) for v in
                      sorted(HTML_ELEMENTS_ATTRIBUTES.keys()) if v != prefix]
 
-        if view.syntax_name(pos).strip() == 'source.css':
+        if view.syntax_name(pos).strip() in ('source.scss', 'source.css'):
             return elements
         else:
             selector = find_css_selector(view, pos)
@@ -195,10 +197,9 @@ class ZenListener(sublime_plugin.EventListener):
 
             if ':' in selector:
                 prefix = selector.rsplit(':', 1)[-1]
-                return [ ( (prefix if prefix else p),
-                           (':' + p),
-                           p.replace('|', '$1') ) for p in CSS_PSEUDO_CLASSES
-                           if not prefix or p.startswith(prefix[0].lower()) ]
+                return [ ( prefix, (':' + p), p.replace('|', '$1') ) for p in
+                           CSS_PSEUDO_CLASSES if
+                           not prefix or p.startswith(prefix[0].lower() ) ]
             else:
                 return elements
 
@@ -218,17 +219,17 @@ class ZenListener(sublime_plugin.EventListener):
             values =  [v for v in CSS_PROP_VALUES.get(prop, []) if v != prefix]
             if values:
                 debug("zenmeta:val prop: %r values: %r" % (prop, values))
-                return [(prefix, ':'+v, v) if prefix else (v, ':'+v, v) for v in values]
+                return [(prefix, ':' + v, v) for v in values]
 
     def html_elements_attributes(self, view, prefix, pos):
         tag         = find_tag_name(view, pos)
         values      = HTML_ELEMENTS_ATTRIBUTES.get(tag, [])
-        return [('@' + v, '%s="$1"' % v) for v in values]
+        return [(prefix, '@' + v, '%s="$1"' % v) for v in values]
 
     def html_attributes_values(self, view, prefix, pos):
         attr        = find_attribute_name(view, pos)
         values      = HTML_ATTRIBUTES_VALUES.get(attr, [])
-        return [('@=' + v, v) for v in values]
+        return [(prefix, '@=' + v, v) for v in values]
 
     def on_query_completions(self, view, prefix, locations):
         if not self.correct_syntax(view): return []
@@ -291,6 +292,7 @@ class ZenListener(sublime_plugin.EventListener):
             # Use this to get non \w based prefixes
             prefix     = css_prefixer(view, pos)
             properties = sorted(CSS_PROP_VALUES.keys())
+            # 'a'.startswith('') is True! so will never get IndexError below
             exacts     = [p for p in properties if p.startswith(prefix)]
 
             if exacts: properties = exacts
@@ -299,11 +301,10 @@ class ZenListener(sublime_plugin.EventListener):
                                       # generally start with first letter
                                       p.strip('-').startswith(prefix[0].lower()) ]
 
-            oq_debug('css_property exact: %r prefix: %r properties: %r' % ( 
-                bool(exacts), prefix, properties ))
+            oq_debug('css_property exact: %r prefix: %r properties: %r' % (
+                      bool(exacts), prefix, properties ))
 
-            return [ ((prefix, ) if prefix else ()) + (v, '%s:$1;' %  v)
-                                 for v in properties ]
+            return [ (prefix, v, '%s:$1;' %  v) for v in properties ]
         else:
             return []
 
@@ -319,7 +320,7 @@ class ZenListener(sublime_plugin.EventListener):
     def on_query_context(self, view, key, op, operand, match_all):
         if key == 'is_zen':
             debug('checking iz_zen context')
-            context = Context.check_context(view)
+            context = ZenListener.check_context(view)
 
             if context is not None:
                 debug('is_zen context enabled')

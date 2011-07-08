@@ -48,8 +48,8 @@ from zentrackers import back_track, track_regex, track_scope
 
 ################################### CONSTANTS ##################################
 
-CSS_PROP     = 'source.css meta.property-list.css meta.property-name.css'
-CSS_SELECTOR = 'source.css meta.selector.css'
+CSS_PROP     = 'meta.property-list.css meta.property-name.css'
+CSS_SELECTOR = 'meta.selector.css'
 ENCODING     = 'utf8' # TODO
 
 ##################################### INIT #####################################

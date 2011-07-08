@@ -19,6 +19,10 @@
 	],
     "ensure_newline_at_eof_on_save": true,
 	"sublimelint": true,
+    "pep8_ignore":
+    [
+    	"E501"
+    ],
 	"tab_completion": true,
 	"tab_size": 4,
 	"translate_tabs_to_spaces": true,

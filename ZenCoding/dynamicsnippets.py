@@ -27,7 +27,7 @@ class CommandsAsYouTypeBase(sublime_plugin.TextCommand):
     def insert(self, abbr):
         view = self.view
 
-        if not abbr:
+        if not abbr and self.erase:
             self.undo()
             self.erase = False
             return
@@ -52,10 +52,8 @@ class CommandsAsYouTypeBase(sublime_plugin.TextCommand):
         last_entry = type(self).history.get(args, '')
 
         def done(abbr): type(self).history[args] = abbr
-        def do():
-            self.view.window().show_input_panel (
-                self.input_message, last_entry, done, self.insert, self.undo )
 
-        sublime.set_timeout(do, 0)
+        self.view.window().show_input_panel (
+            self.input_message, last_entry, done, self.insert, self.undo )
 
 ################################################################################

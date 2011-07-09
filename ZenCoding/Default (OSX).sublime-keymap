@@ -1,5 +1,4 @@
-[
-{
+[{
   "keys": [
     "ctrl+alt+shift+h"
   ], 
@@ -34,6 +33,25 @@
       "operator": "equal", 
       "match_all": true, 
       "key": "selector"
+    }
+  ]
+},
+{
+  "keys": [
+    "ctrl+alt+enter"
+  ], 
+  "command": "wrap_zen_as_you_type", 
+  "context": [
+    {
+            "operand"  : false,
+            "key"      : "selection_empty",
+            "match_all": true,
+            "operator" : "equal"
+    },
+    {
+        "key"      : "num_selections",
+        "operand"  : 1,
+        "operator" : "equal"
     }
   ]
 },
@@ -524,7 +542,6 @@
     }
   ]
 }, 
-
 {
   "keys": [
     "alt+shift+w"
@@ -567,10 +584,10 @@
   "command": "insert_snippet", 
   "context": [
     {
-      "operand": "text.html meta.tag -string -punctuation.definition.tag.begin.html -meta.scope.between-tag-pair.html", 
+      "key": "selector",
+      "operand":   "text.html meta.tag -string -punctuation.definition.tag.begin.html -meta.scope.between-tag-pair.html -source", 
       "operator": "equal", 
-      "match_all": true, 
-      "key": "selector"
+      "match_all": true 
     }
   ]
 }, 
@@ -584,7 +601,7 @@
   "command": "insert_snippet", 
   "context": [
     {
-      "operand": "text.html meta.tag -string -punctuation.definition.tag.begin.html -meta.scope.between-tag-pair.html", 
+      "operand": "text.html meta.tag -string -punctuation.definition.tag.begin.html -meta.scope.between-tag-pair.html -source", 
       "operator": "equal", 
       "match_all": true, 
       "key": "selector"
@@ -607,24 +624,25 @@
   "command": "insert_snippet", 
   "context": [
     {
-      "operand": "text.html meta.tag -string -punctuation.definition.tag.begin.html -meta.scope.between-tag-pair.html", 
+      "operand": "text.html meta.tag -string -punctuation.definition.tag.begin.html -meta.scope.between-tag-pair.html -source",
       "operator": "equal", 
       "match_all": true, 
       "key": "selector"
-    }, 
+    },
     {
       "operand": "\\s$", 
       "operator": "regex_contains", 
       "match_all": true, 
       "key": "preceding_text"
-    }
+    } 
+    
   ]
 },
 {
   "__doc__": "Override for the binding in CSS/*.sublime-keymap",
   "keys": [
     ":"
-  ], 
+  ],
   "args": {
     "contents": ":"
   }, 
@@ -660,11 +678,11 @@
       "command" : "insert_best_completion",
       "args"    : {"exact" : false, "default": "\t"},
       "context": [
-          { "key": "is_zen", "operator": "equal", "operand": true },
-          { "key": "preceding_text", "operator": "not_regex_contains", "operand": "\\.$", "match_all": true },
-          { "key": "has_next_field", "operator": "equal", "operand": true },
-          { "key": "setting.tab_completion", "operator": "equal", "operand": true },
-          { "key": "selector", "operator": "equal", "operand": "text.html", "match_all": true} 
+          { "key": "is_zen",                 "operator": "equal",              "operand": true },
+          { "key": "preceding_text",         "operator": "not_regex_contains", "operand": "\\.$",      "match_all": true },
+          { "key": "has_next_field",         "operator": "equal",              "operand": true },
+          { "key": "setting.tab_completion", "operator": "equal",              "operand": true },
+          { "key": "selector",               "operator": "equal",              "operand": "text.html", "match_all": true} 
       ]
     }
   ]

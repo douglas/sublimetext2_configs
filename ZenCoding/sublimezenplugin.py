@@ -17,6 +17,7 @@ import sublime_plugin
 
 # Zen Coding libs
 from zencoding.parser.abbreviation import ZenInvalidAbbreviation
+from zencoding import resources as zcr
 
 # Dynamic Snippet Base Class
 from dynamicsnippets import CommandsAsYouTypeBase
@@ -68,9 +69,11 @@ __authors__     = ['"Sergey Chikuyonok" <serge.che@gmail.com>'
                    '"Вадим Макеев"      <pepelsbey@gmail.com>',
                    '"Nicholas Dudfield" <ndudfield@gmail.com>']
 
-#################################### LOGGING ###################################
+################################### SETTINGS ###################################
 
 zen_settings = sublime.load_settings('zen-coding.sublime-settings')
+
+#################################### LOGGING ###################################
 
 def debug(f):
     if zen_settings.get('debug'):
@@ -79,6 +82,20 @@ def debug(f):
 
 def oq_debug(f):
     debug("on_query_completions %s" % f)
+
+################################ MY ZEN SETTINGS ###############################
+
+
+def load_settings(force_reload=False):
+    if not zcr.user_settings or force_reload:
+        my_zen_settings = zen_settings.get('my_zen_settings')
+
+        if my_zen_settings is not None:
+            debug('loading my_zen_settings from zen-settings.sublime-settings')
+            zcr.set_vocabulary(my_zen_settings, zcr.VOC_USER)
+            assert zcr.vocabularies[zcr.VOC_USER] is my_zen_settings
+
+load_settings()
 
 ######################## REMOVE HTML/HTML_COMPLETIONS.PY #######################
 
@@ -97,6 +114,7 @@ def remove_html_completions():
             del completions[i]
 
     debug('on_query_completion: %r' % completions)
+
 sublime.set_timeout(remove_html_completions, 1)
 
 ########################## DYNAMIC ZEN CODING SNIPPETS #########################
@@ -115,14 +133,16 @@ class WrapZenAsYouType(CommandsAsYouTypeBase):
 
     def run_command(self, view, cmd_input):
         try:
-            expand_abbr(cmd_input)
+            ex = expand_abbr(cmd_input)
+            if not ex: raise ZenInvalidAbbreviation('Empty expansion %r' % r)
         except ZenInvalidAbbreviation, e:
             return False
 
-        # view.cmd.run_zen_action(action="wrap_with_abbreviation", abbr=cmd_input)
         view.run_command (
             'run_zen_action',
             dict(action="wrap_with_abbreviation", abbr=cmd_input) )
+
+################################ RUN ZEN ACTION ################################
 
 class RunZenAction(sublime_plugin.TextCommand):
     last_matches = []
@@ -142,15 +162,7 @@ class RunZenAction(sublime_plugin.TextCommand):
 
         self.last_matches = matches
 
-class SetHtmlSyntaxAndInsertSkel(sublime_plugin.TextCommand):
-    def run(self, edit, doctype=None):
-        view     = self.view
-        syntax   = zen_settings.get( 'default_html_syntax',
-                                     'Packages/HTML/HTML.tmlanguage' )
-        view.set_syntax_file(syntax)
-
-        view.run_command( 'insert_snippet',
-                          {'contents': expand_abbr('html:%s' % doctype)} )
+################################# ZEN MNEMONIC #################################
 
 class ZenCssMnemonic(sublime_plugin.WindowCommand):
     " Insert css snippets from QuickPanel"
@@ -180,6 +192,8 @@ class ZenCssMnemonic(sublime_plugin.WindowCommand):
 
         display  = [[v,k] for k,v in forpanel]
         window.show_quick_panel(display, done)
+
+################################### CONTEXTS ###################################
 
 class ZenListener(sublime_plugin.EventListener):
     def correct_syntax(self, view):
@@ -328,5 +342,23 @@ class ZenListener(sublime_plugin.EventListener):
             else:
                 debug('is_zen context disabled')
                 return False
+
+    # def on_post_save(self, view):
+    #     fn = view.file_name()
+
+    #     if fn and fn.endswith('zen-coding.sublime-settings'):
+    #         load_settings(force_reload=True)
+
+################################################################################
+
+class SetHtmlSyntaxAndInsertSkel(sublime_plugin.TextCommand):
+    def run(self, edit, doctype=None):
+        view     = self.view
+        syntax   = zen_settings.get( 'default_html_syntax',
+                                     'Packages/HTML/HTML.tmlanguage' )
+        view.set_syntax_file(syntax)
+
+        view.run_command( 'insert_snippet',
+                          {'contents': expand_abbr('html:%s' % doctype)} )
 
 ################################################################################

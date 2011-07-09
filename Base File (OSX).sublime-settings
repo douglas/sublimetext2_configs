@@ -4,6 +4,7 @@
 	"color_scheme": "Packages/User/DouglasCasts.tmTheme",
 	"detect_indentation": false,
 	"draw_minimap_border": true,
+	"ensure_newline_at_eof_on_save": true,
 	"font_face": "UbuntuBeta Mono",
 	"font_options":
 	[
@@ -13,16 +14,15 @@
 	"gutter": true,
 	"highlight_line": true,
 	"indent_subsequent_lines": true,
+	"pep8_ignore":
+	[
+		"E501"
+	],
 	"rulers":
 	[
 		80
 	],
-    "ensure_newline_at_eof_on_save": true,
 	"sublimelint": true,
-    "pep8_ignore":
-    [
-    	"E501"
-    ],
 	"tab_completion": true,
 	"tab_size": 4,
 	"translate_tabs_to_spaces": true,

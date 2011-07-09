@@ -145,7 +145,7 @@ def pep8_check(code, filename, ignore=None):
     if _lines:
         def report_error(self, line_number, offset, text, check):
             code = text[:4]
-            msg = text[5:]
+            msg = "(%s) %s" % (code, text[5:])
             if pep8.ignore_code(code):
                 return
             if code.startswith('E'):

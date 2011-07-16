@@ -30,14 +30,14 @@ The plugin is based in code from the Open Komodo Editor and has a MPL license.
 Port by German M. Bravo (Kronuz). May 30, 2011
 
 For Manual autocompletion:
-    Setup in User Key Bindings (Packages/User/Default.sublime-keymap):
+    User Key Bindings are setup like this:
         { "keys": ["super+j"], "command": "code_intel_auto_complete" }
 
 For "Jump to symbol declaration":
-    Setup in User Key Bindings (Packages/User/Default.sublime-keymap):
+    User Key Bindings are set up like this
         { "keys": ["super+f3"], "command": "goto_python_definition" }
-    ...or in User Mouse Bindings (Packages/User/Default.sublime-mousemap):
-        { "button": "button1", "modifiers": ["super"], "command": "goto_python_definition", "press_command": "drag_select" }
+    ...and User Mouse Bindings as:
+        { "button": "button1", "modifiers": ["alt"], "command": "goto_python_definition", "press_command": "drag_select" }
 
 Configuration files (`~/.codeintel/config' or `project_root/.codeintel/config'). All configurations are optional. Example:
     {
@@ -212,8 +212,13 @@ def autocomplete(view, timeout, busy_timeout, preemptive=False, args=[], kwargs=
     def _autocomplete_callback(view, path):
         id = view.id()
         content = view.substr(sublime.Region(0, view.size()))
-        if content:
-            pos = view.sel()[0].end()
+        sel = view.sel()[0]
+        pos = sel.end()
+        try:
+            next = content[pos].strip()
+        except IndexError:
+            next = ''
+        if pos and content and content[view.line(sel).begin():pos].strip() and not next.isalnum() and next != '_':
             #TODO: For the sentinel to work, we need to send a prefix to the completions... but no show_completions() currently available
             #pos = sentinel[path] if sentinel[path] is not None else view.sel()[0].end()
             lang, _ = os.path.splitext(os.path.basename(view.settings().get('syntax')))
@@ -221,13 +226,13 @@ def autocomplete(view, timeout, busy_timeout, preemptive=False, args=[], kwargs=
             def _trigger(cplns, calltips):
                 if cplns is not None or calltips is not None:
                     codeintel_log.info("Autocomplete called (%s) [%s]", lang, ','.join(c for c in ['cplns' if cplns else None, 'calltips' if calltips else None] if c))
-                if cplns is not None:
+                if cplns:
                     # Show autocompletions:
                     completions[id] = sorted(
                         [('%s  (%s)' % (name, type), name) for type, name in cplns],
                         cmp=lambda a, b: a[1] < b[1] if a[1].startswith('_') and b[1].startswith('_') else False if a[1].startswith('_') else True if b[1].startswith('_') else a[1] < b[1]
                     )
-                    sublime.set_timeout(lambda: view.run_command('auto_complete', {'disable_auto_insert': True}), 0)
+                    view.run_command('auto_complete', {'disable_auto_insert': True})
                 elif calltips is not None:
                     # Trigger a tooltip
                     calltip(view, 'tip', calltips[0])
@@ -260,7 +265,7 @@ class PythonCodeIntel(sublime_plugin.EventListener):
             lang = lang or guess_lang_from_path(path)
         except CodeIntelError:
             pass
-        live = view.settings().get('codeinte_live', True)
+        live = view.settings().get('codeintel_live', True)
         pos = view.sel()[0].end()
         text = view.substr(sublime.Region(pos - 1, pos))
         _sentinel = sentinel.get(path)
@@ -309,6 +314,7 @@ class CodeIntelAutoComplete(sublime_plugin.TextCommand):
         path = view.file_name()
         autocomplete(view, 0, 0, True, args=[path])
 
+
 class GotoPythonDefinition(sublime_plugin.TextCommand):
     def run(self, edit, block=False):
         view = self.view
@@ -328,11 +334,9 @@ class GotoPythonDefinition(sublime_plugin.TextCommand):
                         log.debug(msg)
                         codeintel_log.debug(msg)
 
-                        def __trigger():
-                            window = sublime.active_window()
-                            window.open_file(path, sublime.ENCODED_POSITION)
-                            window.open_file(path, sublime.ENCODED_POSITION)
-                        sublime.set_timeout(__trigger, 0)
+                        window = sublime.active_window()
+                        window.open_file(path, sublime.ENCODED_POSITION)
+                        window.open_file(path, sublime.ENCODED_POSITION)
         codeintel(view, path, content, lang, pos, ('defns',), _trigger)
 
 _ci_envs_ = {}
@@ -500,6 +504,9 @@ def codeintel_scan(view, path, content, lang, callback=None, pos=None, forms=Non
         lang = lang or guess_lang_from_path(path)
     except CodeIntelError:
         logger(view, 'warning', "skip `%s': couldn't determine language" % path)
+        return
+    lang = {'SCSS': 'CSS'}.get(lang, lang)  # Languages equivalent map
+    if lang.lower() in [l.lower() for l in view.settings().get('codeintel_disabled_languages', [])]:
         return
     is_scratch = view.is_scratch()
     is_dirty = view.is_dirty()
@@ -717,9 +724,11 @@ def codeintel(view, path, content, lang, pos, forms, callback=None, timeout=7000
             ret.append(l.get(f))
         total = (time.time() - start)
         if not despaired or total * 1000 < timeout:
+            def _callback():
+                if view.line(view.sel()[0]) == view.line(pos):
+                    callback(*ret)
             logger(view, 'info', "")
-            if view.line(view.sel()[0]) == view.line(pos):
-                callback(*ret)
+            sublime.set_timeout(_callback, 0)
         else:
             logger(view, 'info', "Just finished indexing! Please try again. Scan took %s" % total, timeout=3000)
     codeintel_scan(view, path, content, lang, _codeintel, pos, forms)

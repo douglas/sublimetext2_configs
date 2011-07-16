@@ -64,20 +64,20 @@ description =\
 
 
 class Pep8Error(pyflakes.messages.Message):
-    message = 'PEP 8: %s'
+    message = 'PEP 8 (%s): %s'
 
-    def __init__(self, filename, loc, text):
+    def __init__(self, filename, loc, code, text):
         # PEP 8 Errors are downgraded to "warnings"
-        pyflakes.messages.Message.__init__(self, filename, loc, level='W', message_args=(text,))
+        pyflakes.messages.Message.__init__(self, filename, loc, level='W', message_args=(code, text,))
         self.text = text
 
 
 class Pep8Warning(pyflakes.messages.Message):
-    message = 'PEP 8: %s'
+    message = 'PEP 8 (%s): %s'
 
-    def __init__(self, filename, loc, text):
+    def __init__(self, filename, loc, code, text):
         # PEP 8 Warnings are downgraded to "violations"
-        pyflakes.messages.Message.__init__(self, filename, loc, level='V', message_args=(text,))
+        pyflakes.messages.Message.__init__(self, filename, loc, level='V', message_args=(code, text))
         self.text = text
 
 
@@ -145,13 +145,13 @@ def pep8_check(code, filename, ignore=None):
     if _lines:
         def report_error(self, line_number, offset, text, check):
             code = text[:4]
-            msg = "(%s) %s" % (code, text[5:])
+            msg = text[5:]
             if pep8.ignore_code(code):
                 return
             if code.startswith('E'):
-                messages.append(Pep8Error(filename, Dict2Obj(lineno=line_number, col_offset=offset), msg))
+                messages.append(Pep8Error(filename, Dict2Obj(lineno=line_number, col_offset=offset), code, msg))
             else:
-                messages.append(Pep8Warning(filename, Dict2Obj(lineno=line_number, col_offset=offset), msg))
+                messages.append(Pep8Warning(filename, Dict2Obj(lineno=line_number, col_offset=offset), code, msg))
         pep8.Checker.report_error = report_error
 
         _ignore = ignore + pep8.DEFAULT_IGNORE.split(',')

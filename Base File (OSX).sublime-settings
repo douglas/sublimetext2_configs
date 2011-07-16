@@ -18,6 +18,8 @@
 	[
 		"E501"
 	],
+    "codeintel_live": true,
+    "codeintel_disabled_languages": ['css'],
 	"rulers":
 	[
 		80

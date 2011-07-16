@@ -327,7 +327,13 @@
         "tab_overlap": 17,
         "tab_width": 180,
         "tab_min_width": 40,
-        "tab_height": 28
+        "tab_height": 28,
+        "mouse_wheel_switch": false
+    },
+    {
+        "class": "tabset_control",
+        "settings": ["mouse_wheel_switches_tabs"],
+        "mouse_wheel_switch": true
     },
     {
         "class": "tab_control",
@@ -340,7 +346,8 @@
         //"layer2.texture": "Theme - Default/tab_glow.png",
         //"layer2.inner_margin": [18, 4],
         //"layer2.opacity": { "target": 0.0, "speed": 4.0, "interpolation": "smoothstep" },
-        "content_margin": [20, 4, 13, 4],
+        "content_margin": [20, 4, 20, 4],
+        "max_margin_trim": 4,
         "hit_test_level": 0.5
     },
     {
@@ -348,6 +355,7 @@
         "attributes": ["selected"],
         "layer1.opacity": 1.0
     },
+
     /*
     {
         "class": "tab_control",
@@ -358,7 +366,8 @@
     {
         "class": "tab_label",
         "fg": [255, 255, 255],
-        "bg": [56, 56, 56]
+        "bg": [56, 56, 56],
+        "fade": true
     },
     {
         "class": "tab_label",
@@ -370,13 +379,27 @@
     },
     {
         "class": "tab_close_button",
-        "layer0.texture": "Theme - Default/cross.png",
+        "layer0.texture": "Theme - Default/unpadded_cross.png",
         "layer0.opacity": 1.0,
         "layer0.inner_margin": 0,
-        "layer1.texture": "Theme - Default/cross_over.png",
+        "layer1.texture": "Theme - Default/unpadded_cross_over.png",
         "layer1.opacity": 0.0,
         "layer1.opacity": { "target": 0.0, "speed": 4.0, "interpolation": "smoothstep" },
-        "content_margin": [8, 8]
+        "content_margin": [0, 0]        // set below if tab close buttons are enabled
+    },
+    {
+        // If show_tab_close_buttons isn't set, then show the close button when hovering over the tab
+        "class": "tab_close_button",
+        "parents":
+        [
+            { "class": "tab_control", "attributes": ["hover"] }
+        ],
+        "content_margin": [5, 8, 4, 8]
+    },
+    {
+        "class": "tab_close_button",
+        "settings": ["show_tab_close_buttons"],
+        "content_margin": [5, 8, 4, 8]
     },
     {
         "class": "tab_close_button",

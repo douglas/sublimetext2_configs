@@ -13,3 +13,6 @@
 [submodule "SublimeLint"]
 	path = SublimeLint
 	url = https://github.com/OscarL/SublimeLint.git
+[submodule "sublime-github"]
+	path = sublime-github
+	url = https://github.com/bgreenlee/sublime-github.git

@@ -7,3 +7,6 @@
 [submodule "Django4ST2"]
 	path = Django4ST2
 	url = https://github.com/squ1b3r/Django4ST2.git
+[submodule "SublimeCodeIntel"]
+	path = SublimeCodeIntel
+	url = https://github.com/Kronuz/SublimeCodeIntel.git

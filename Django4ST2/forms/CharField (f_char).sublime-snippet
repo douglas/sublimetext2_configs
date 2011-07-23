@@ -1,7 +1,0 @@
-<!-- See http://www.sublimetext.com/docs/snippets for more information -->
-<snippet>
-    <content><![CDATA[${1:FIELDNAME} = forms.CharField($2)]]></content>
-    <tabTrigger>fchar</tabTrigger>
-    <scope>source.python</scope>
-    <description>CharField (fchar)</description>
-</snippet>

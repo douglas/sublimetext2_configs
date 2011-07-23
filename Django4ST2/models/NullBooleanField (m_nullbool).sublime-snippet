@@ -1,7 +1,0 @@
-<!-- See http://www.sublimetext.com/docs/snippets for more information -->
-<snippet>
-    <content><![CDATA[${1:FIELDNAME} = models.NullBooleanField($2)]]></content>
-    <tabTrigger>mnullbool</tabTrigger>
-    <scope>source.python</scope>
-    <description>NullBooleanField (mnullbool)</description>
-</snippet>

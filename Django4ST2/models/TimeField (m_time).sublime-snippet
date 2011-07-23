@@ -1,7 +1,0 @@
-<!-- See http://www.sublimetext.com/docs/snippets for more information -->
-<snippet>
-    <content><![CDATA[${1:FIELDNAME} = models.TimeField($2)]]></content>
-    <tabTrigger>mtime</tabTrigger>
-    <scope>source.python</scope>
-    <description>TimeField (mtime)</description>
-</snippet>

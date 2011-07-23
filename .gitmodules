@@ -1,3 +1,6 @@
 [submodule "Theme - Soda"]
 	path = Theme - Soda
 	url = https://github.com/buymeasoda/soda-theme.git
+[submodule "Sniptastic"]
+	path = Sniptastic
+	url = https://github.com/bobthecow/sublime-sniptastic.git

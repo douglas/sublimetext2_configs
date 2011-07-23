@@ -8,6 +8,7 @@ import sys
 import re
 import random
 import time
+import copy
 
 import logging
 
@@ -73,6 +74,26 @@ __authors__     = ['"Sergey Chikuyonok" <serge.che@gmail.com>'
 
 zen_settings = sublime.load_settings('zen-coding.sublime-settings')
 
+##################################### TODO #####################################
+"""
+
+Don't do valid_tag checking for as you type, only for `insert_best_completion`
+Should be able to use as you type for anything, including <xml:namespaces />
+
+valid_tag checking should possibly check for abbreviations eg.
+    
+    "my_zen_settings" : {
+        "html": {
+            "abbreviations": {
+                "jq": "<script src='jquery.js' type='javascript'>",
+                "demo": "<div id=\"demo\"></div>"
+            }
+       }
+
+There should be a setting to disable contextual completions
+
+Installation
+"""
 #################################### LOGGING ###################################
 
 def debug(f):
@@ -84,7 +105,6 @@ def oq_debug(f):
     debug("on_query_completions %s" % f)
 
 ################################ MY ZEN SETTINGS ###############################
-
 
 def load_settings(force_reload=False):
     if not zcr.user_settings or force_reload:
@@ -226,7 +246,7 @@ class ZenListener(sublime_plugin.EventListener):
 
         if values and prefix and prefix in values:
             oq_debug("zcprop:val prop: %r values: %r" % (prop, values))
-            return [(prefix, d, v) for d,v in sorted(values.items())]
+            return [(prefix, v, v) for d,v in sorted(values.items())]
         else:
             # Look for values relating to that property
             # Remove exact matches, so a \t is inserted
@@ -343,11 +363,12 @@ class ZenListener(sublime_plugin.EventListener):
                 debug('is_zen context disabled')
                 return False
 
-    # def on_post_save(self, view):
-    #     fn = view.file_name()
+    def on_post_save(self, view):
+        fn = view.file_name()
 
-    #     if fn and fn.endswith('zen-coding.sublime-settings'):
-    #         load_settings(force_reload=True)
+        if fn and fn.endswith('zen-coding.sublime-settings'):
+            # Seems to take a bit of time for settings to be reloaded
+            sublime.set_timeout(lambda: load_settings(force_reload=True), 1000)
 
 ################################################################################
 

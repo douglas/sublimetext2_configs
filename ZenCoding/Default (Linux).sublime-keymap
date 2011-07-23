@@ -294,7 +294,7 @@
     {
       "key": "selector", 
       "match_all": true, 
-      "operand": "punctuation.definition.tag.html, meta.scope.between-tag-pair.html, punctuation.definition.tag.begin.html", 
+      "operand": "meta.scope.between-tag-pair.html", 
       "operator": "equal"
     }, 
     {

@@ -1,0 +1,55 @@
+# Sublime Text 2 Configuration (en)
+
+
+
+
+# Sublime Text 2 Configuration (pt_br)
+
+Esse projeto armazena as minhas configurações e os plugins que eu uso no
+Sublime Text 2.
+
+## Plugins
+
+* Django for SublimeText 2 ()
+* Sniptastic (https://github.com/bobthecow/sublime-sniptastic.git)
+
+## Instalação
+
+1. Faça o clone do projeto dentro da pasta ``Packages`` definindo o nome da
+pasta como ``User``:
+
+```bash
+$ git clone git@github.com:dsarch/sublimetext2_configs.git User
+```
+
+2. Depois faça o download dos submódulos dentro da pasta ``User``:
+
+```bash
+$ git submodule init
+$ git submodule update
+```
+
+3. Fazer os links simbolicos para os submódulos que estão em User dentro da
+pasta Packages
+
+### osx
+
+```bash
+$ cd ~/Library/Application Support/Sublime Text 2/Packages
+$ ln -s User/sublime-github .
+$ ln -s User/Sniptastic .
+$ ln -s User/SublimeLint .
+$ ln -s User/SublimeCodeIntel .
+$ ln -s User/Django4ST2 .
+```
+
+### gnu/linux
+
+```bash
+$ cd ~/.config/sublime-text-2/Packages
+$ ln -s User/sublime-github .
+$ ln -s User/Sniptastic .
+$ ln -s User/SublimeLint .
+$ ln -s User/SublimeCodeIntel .
+$ ln -s User/Django4ST2 .
+```

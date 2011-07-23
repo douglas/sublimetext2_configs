@@ -3,7 +3,7 @@
 
 
 
-# Sublime Text 2 Configuration (pt_br)
+# Configuração do Sublime Text 2 (pt_br)
 
 Esse projeto armazena as minhas configurações e os plugins que eu uso no
 Sublime Text 2.
@@ -12,6 +12,7 @@ Sublime Text 2.
 
 * Django for SublimeText 2 ()
 * Sniptastic (https://github.com/bobthecow/sublime-sniptastic.git)
+...
 
 ## Instalação
 
@@ -41,6 +42,7 @@ $ ln -s User/Sniptastic .
 $ ln -s User/SublimeLint .
 $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Django4ST2 .
+$ ln -s User/gitst2 .
 ```
 
 ### gnu/linux
@@ -52,4 +54,5 @@ $ ln -s User/Sniptastic .
 $ ln -s User/SublimeLint .
 $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Django4ST2 .
+$ ln -s User/gitst2 .
 ```

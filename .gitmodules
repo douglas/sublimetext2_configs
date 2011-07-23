@@ -4,3 +4,6 @@
 [submodule "Sniptastic"]
 	path = Sniptastic
 	url = https://github.com/bobthecow/sublime-sniptastic.git
+[submodule "Django4ST2"]
+	path = Django4ST2
+	url = https://github.com/squ1b3r/Django4ST2.git

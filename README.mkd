@@ -56,3 +56,9 @@ $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Django4ST2 .
 $ ln -s User/gitst2 .
 ```
+
+4. Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:
+
+```bash
+$ git submodule foreach git pull origin master
+```

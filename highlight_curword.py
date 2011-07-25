@@ -25,10 +25,8 @@ class HighlightCurrentWord_Listener(sublime_plugin.EventListener):
         if not self.enabled:
             return
 
-        disallowed_syntax = [u"Packages/Python/Python.tmLanguage",
-                             u"Packages/CSS/CSS.tmLanguage",
-                             u"Packages/SQL/SQL.tmLanguage"]
-        if view.settings().get("syntax") in disallowed_syntax:
+        allowed_syntax = [u"Packages/HTML/HTML.tmLanguage"],
+        if view.settings().get("syntax") not in allowed_syntax:
             return
 
         if len(view.sel()) != 1 or view.sel()[0].size() > 80 or \

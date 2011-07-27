@@ -43,6 +43,7 @@ $ ln -s User/SublimeLint .
 $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Django4ST2 .
 $ ln -s User/gitst2 .
+$ ln -s "User/Theme - Soda" .
 ```
 
 ### gnu/linux
@@ -55,6 +56,7 @@ $ ln -s User/SublimeLint .
 $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Django4ST2 .
 $ ln -s User/gitst2 .
+$ ln -s "User/Theme - Soda" .
 ```
 
 4. Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:

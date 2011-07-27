@@ -278,7 +278,17 @@
     {
         "class": "sidebar_heading",
         "color": [96, 110, 128],
-        "font.bold": true
+        "font.bold": true,
+        "shadow_color": [255, 255, 255],
+        "shadow_offset": [1, 1]
+    },
+    {
+        "class": "sidebar_heading",
+        "parents":
+        [
+            { "class": "tree_row", "attributes": ["selected"] }
+        ],
+        "shadow_color": [160, 174, 192]
     },
     {
         "class": "sidebar_label",

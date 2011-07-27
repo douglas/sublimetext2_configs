@@ -189,9 +189,28 @@
     },
 
     {
+        "class": "puck_control",
+        "settings": ["overlay_scroll_bars"],
+        "attributes": ["dark"],
+        "layer0.texture": "Theme - Default/overlay_puck_dark_content.png"
+    },
+    {
+        "class": "puck_control",
+        "settings": ["overlay_scroll_bars"],
+        "attributes": ["horizontal", "dark"],
+        "layer0.texture": "Theme - Default/overlay_hpuck_dark_content.png"
+    },
+
+    {
         "class": "panel_control",
-        "layer0.tint": [64, 64, 64, 255],
+        "layer0.tint": [64, 64, 64],
         "layer0.opacity": 1.0
+    },
+    {
+        "class": "overlay_control",
+        "layer0.tint": [64, 64, 64],
+        "layer0.opacity": 1.0,
+        "content_margin": [4, 4]
     },
     {
         "class": "popup_control",
@@ -269,18 +288,28 @@
         "layer1.opacity": 1.0
     },
     {
+        "class": "sidebar_container",
+        "layer0.tint": [80, 80, 80],
+        "layer0.opacity": 1.0,
+        "layer0.draw_center": false,
+        "layer0.inner_margin": [0, 0, 1, 0],
+        "content_margin": [0, 0, 1, 0]
+    },
+    {
         "class": "sidebar_tree",
         "row_padding": [8, 3],
         "indent": 12,
         "indent_offset": 17,
-        "background_color": [214, 221, 230, 255]
+        "layer0.tint": [214, 221, 230],
+        "layer0.opacity": 1.0,
+        "dark_content": false
     },
     {
         "class": "sidebar_heading",
         "color": [96, 110, 128],
         "font.bold": true,
         "shadow_color": [255, 255, 255],
-        "shadow_offset": [1, 1]
+        "shadow_offset": [0, 1]
     },
     {
         "class": "sidebar_heading",
@@ -293,6 +322,10 @@
     {
         "class": "sidebar_label",
         "color": [0, 0, 0]
+    },
+    {
+        "class": "minimap_control",
+        "viewport_color": [68, 68, 68, 96]
     },
     {
         "class": "text_line_control",
@@ -311,7 +344,9 @@
     {
         "class": "quick_panel",
         "row_padding": [2, 1],
-        "background_color": [39, 40, 34, 255]
+        "layer0.tint": [39, 40, 34],
+        "layer0.opacity": 1.0,
+        "dark_content": true
     },
     {
         "class": "quick_panel_row",
@@ -366,7 +401,9 @@
     {
         "class": "auto_complete",
         "row_padding": [2, 1],
-        "background_color": [255, 255, 255, 255]
+        "layer0.tint": [255, 255, 255],
+        "layer0.opacity": 1.0,
+        "dark_content": false
     },
     {
         "class": "auto_complete_label",

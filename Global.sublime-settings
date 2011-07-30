@@ -6,5 +6,6 @@
                               "*.sdf", "*.suo", "*.pdb", "*.idb", ".DS_Store",
                               "*.pdf", "*.class",".*"],
     "theme": "Soda Light.sublime-theme",
-    "open_files_in_new_window": false
+    "open_files_in_new_window": false,
+    "use_simple_full_screen": true
 }

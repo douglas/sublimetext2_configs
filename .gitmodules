@@ -16,7 +16,7 @@
 	ignore = untracked 
 [submodule "SublimeLint"]
 	path = SublimeLint
-	url = https://github.com/OscarL/SublimeLint.git
+	url = https://github.com/Kronuz/SublimeLint.git
 	ignore = untracked 
 [submodule "sublime-github"]
 	path = sublime-github

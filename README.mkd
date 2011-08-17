@@ -16,21 +16,21 @@ Sublime Text 2.
 
 ## Instalação
 
-1. Faça o clone do projeto dentro da pasta ``Packages`` definindo o nome da
+* Faça o clone do projeto dentro da pasta ``Packages`` definindo o nome da
 pasta como ``User``:
 
 ```bash
 $ git clone git@github.com:dsarch/sublimetext2_configs.git User
 ```
 
-2. Depois faça o download dos submódulos dentro da pasta ``User``:
+* Depois faça o download dos submódulos dentro da pasta ``User``:
 
 ```bash
 $ git submodule init
 $ git submodule update
 ```
 
-3. Fazer os links simbolicos para os submódulos que estão em User dentro da
+* Fazer os links simbolicos para os submódulos que estão em User dentro da
 pasta Packages
 
 ### osx
@@ -59,13 +59,13 @@ $ ln -s User/gitst2 .
 $ ln -s "User/Theme - Soda" .
 ```
 
-4. Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:
+* Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:
 
 ```bash
 $ git submodule foreach git pull origin master
 ```
 
-5. Crie um link simbólico para que as configuracoes gerais sejam vistas. Faça de
+* Crie um link simbólico para que as configuracoes gerais sejam vistas. Faça de
 acordo com sua plataforma (OSX ou Linux):
 
 ```bash

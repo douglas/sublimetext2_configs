@@ -64,3 +64,10 @@ $ ln -s "User/Theme - Soda" .
 ```bash
 $ git submodule foreach git pull origin master
 ```
+
+5. Crie um link simbólico para que as configuracoes gerais sejam vistas. Faça de
+acordo com sua plataforma (OSX ou Linux):
+
+```bash
+$ ln -s "Base File (<plataforma>).sublime-settings" "Base File.sublime-settings"
+```

@@ -22,5 +22,5 @@
         [
             { "key": "setting.tab_completion", "operator": "equal", "operand": true }
         ]
-    },
+    }
 ]

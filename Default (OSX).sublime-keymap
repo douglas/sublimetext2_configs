@@ -3,9 +3,24 @@
     { "keys": ["super+j"], "command": "code_intel_auto_complete" },
     { "keys": ["super+ctrl+,"], "command": "unexpand_tabs"},
     { "keys": ["super+ctrl+."], "command": "expand_tabs"},
-    { "keys": ["ctrl+."], "command": "close_tag" },
     { "keys": ["ctrl+,"], "command": "validate" },
     { "keys": ["super+ctrl+alt+left"], "command": "navigation_history_back"},
     { "keys": ["super+ctrl+alt+right"], "command": "navigation_history_forward"},
-    { "keys": ["ctrl+shift+u"], "command": "web_colors" }
+    { "keys": ["ctrl+shift+u"], "command": "web_colors" },
+
+    { "keys": ["tab"], "command": "auto_complete" },
+    { "keys": ["tab"], "command": "replace_completion_with_auto_complete", "context":
+        [
+            { "key": "last_command", "operator": "equal", "operand": "insert_best_completion" },
+            { "key": "setting.tab_completion", "operator": "equal", "operand": true }
+        ]
+    },
+
+    { "keys": ["tab+space"], "command": "insert_best_completion", "args": {"default": "\t", "exact": true} },
+    { "keys": ["tab+space"], "command": "insert_best_completion", "args": {"default": "\t", "exact": false},
+        "context":
+        [
+            { "key": "setting.tab_completion", "operator": "equal", "operand": true }
+        ]
+    },
 ]

@@ -14,9 +14,9 @@
 	path = SublimeCodeIntel
 	url = https://github.com/Kronuz/SublimeCodeIntel.git
 	ignore = untracked 
-[submodule "SublimeLint"]
-	path = SublimeLint
-	url = https://github.com/Kronuz/SublimeLint.git
+[submodule "SublimeLinter"]
+	path = SublimeLinter
+	url = https://github.com/Kronuz/SublimeLinter.git
 	ignore = untracked 
 [submodule "sublime-github"]
 	path = sublime-github

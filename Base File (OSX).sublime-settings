@@ -23,12 +23,21 @@
     [
         80
     ],
-    "sublimelint": true,
+    "sublimelinter": true,
     "tab_completion": true,
     "tab_size": 4,
     "translate_tabs_to_spaces": true,
     "trim_automatic_white_space": true,
     "use_tab_stops": true,
-    "word_wrap": false
+    "word_wrap": false,
+    "sublimelinter_disable":
+    [
+        "Perl",
+        "PHP",
+        "jshint",
+        "notes",
+        "objective-j",
+        "ruby"
+    ]
     // "codeintel_disabled_languages": ["css"]
 }

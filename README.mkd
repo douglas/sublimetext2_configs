@@ -39,7 +39,7 @@ pasta Packages
 $ cd ~/Library/Application Support/Sublime Text 2/Packages
 $ ln -s User/sublime-github .
 $ ln -s User/Sniptastic .
-$ ln -s User/SublimeLint .
+$ ln -s User/SublimeLinter .
 $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Django4ST2 .
 $ ln -s User/gitst2 .
@@ -52,7 +52,7 @@ $ ln -s "User/Theme - Soda" .
 $ cd ~/.config/sublime-text-2/Packages
 $ ln -s User/sublime-github .
 $ ln -s User/Sniptastic .
-$ ln -s User/SublimeLint .
+$ ln -s User/SublimeLinter .
 $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Django4ST2 .
 $ ln -s User/gitst2 .

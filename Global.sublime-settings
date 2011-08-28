@@ -1,12 +1,41 @@
 {
-    "folder_exclude_patterns": [".svn", ".git", ".hg", "CVS", ".*", "build",
-                                "*.egg-info"],
-    "file_exclude_patterns": ["*.pyc", "*.pyo", "*.exe", "*.dll", "*.obj",
-                              "*.o", "*.a", "*.lib", "*.so", "*.dylib", "*.ncb",
-                              "*.sdf", "*.suo", "*.pdb", "*.idb", ".DS_Store",
-                              "*.pdf", "*.class",".*"],
-    "theme": "Soda Light.sublime-theme",
-    "open_files_in_new_window": false,
-    "use_simple_full_screen": true,
-    "ignored_packages": ["Vintage"]
+	"file_exclude_patterns":
+	[
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.pdf",
+		"*.class",
+		".*"
+	],
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		".*",
+		"build",
+		"*.egg-info"
+	],
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"open_files_in_new_window": false,
+	"theme": "Soda Light.sublime-theme",
+	"use_simple_full_screen": true
 }

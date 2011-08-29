@@ -16,7 +16,8 @@
     "indent_subsequent_lines": true,
     "pep8_ignore":
     [
-        "E501"
+        "E501",
+        "E502"
     ],
     "codeintel_live": true,
     "rulers":
@@ -33,11 +34,9 @@
     "sublimelinter_disable":
     [
         "Perl",
-        "PHP",
-        "jshint",
-        "notes",
-        "objective-j",
-        "ruby"
-    ]
-    // "codeintel_disabled_languages": ["css"]
+        "Objective-J",
+        "annotations",
+        "pylint"
+    ],
+    "codeintel_disabled_languages": ["JavaScript"]
 }

@@ -33,6 +33,8 @@
 [submodule "GoSublime"]
 	path = GoSublime
 	url = https://github.com/DisposaBoy/GoSublime.git
+	ignore = untracked
 [submodule "SublimeBrackets"]
 	path = SublimeBrackets
 	url = https://github.com/pyparadigm/SublimeBrackets.git
+	ignore = untracked

@@ -30,3 +30,6 @@
 	path = SublimeTagmatcher
 	url = https://github.com/pyparadigm/SublimeTagmatcher.git
 	ignore = untracked 
+[submodule "GoSublime"]
+	path = GoSublime
+	url = https://github.com/DisposaBoy/GoSublime.git

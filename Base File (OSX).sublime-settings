@@ -1,4 +1,5 @@
 {
+    "match_brackets": false,
     "auto_indent": true,
     "auto_match_enabled": true,
     "color_scheme": "Packages/User/DouglasCasts.tmTheme",
@@ -16,8 +17,8 @@
     "indent_subsequent_lines": true,
     "pep8_ignore":
     [
-        "E501",
-        "E502"
+        "E501", // Line too long
+        "E302" // Expected two blank lines
     ],
     "codeintel_live": true,
     "rulers":

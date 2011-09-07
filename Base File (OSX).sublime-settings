@@ -17,8 +17,8 @@
     "indent_subsequent_lines": true,
     "pep8_ignore":
     [
-        "E501", // Line too long
-        "E302" // Expected two blank lines
+        //"E302", // Expected two blank lines
+        "E501" // Line too long
     ],
     "codeintel_live": true,
     "rulers":
@@ -30,14 +30,9 @@
     "tab_size": 4,
     "translate_tabs_to_spaces": true,
     "trim_automatic_white_space": true,
+    "trim_trailing_white_space_on_save": true,
     "use_tab_stops": true,
     "word_wrap": false,
-    "sublimelinter_disable":
-    [
-        "Perl",
-        "Objective-J",
-        "annotations",
-        "pylint"
-    ],
-    "codeintel_disabled_languages": ["JavaScript"]
+    "codeintel_disabled_languages": ["JavaScript"],
+    "pyflakes_disabled": true
 }

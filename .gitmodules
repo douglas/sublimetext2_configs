@@ -26,15 +26,7 @@
 	path = gitst2
 	url = https://github.com/notanumber/gitst2.git
 	ignore = untracked 
-[submodule "SublimeTagmatcher"]
-	path = SublimeTagmatcher
-	url = https://github.com/pyparadigm/SublimeTagmatcher.git
-	ignore = untracked 
 [submodule "GoSublime"]
 	path = GoSublime
 	url = https://github.com/DisposaBoy/GoSublime.git
-	ignore = untracked
-[submodule "SublimeBrackets"]
-	path = SublimeBrackets
-	url = https://github.com/pyparadigm/SublimeBrackets.git
 	ignore = untracked

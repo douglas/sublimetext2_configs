@@ -21,12 +21,10 @@
 				<string>#2E3031</string>
 				<key>selection</key>
 				<string>#5A647EE0</string>
-
                 <key>bracketsForeground</key>
                 <string>#D3B625</string>
                 <key>bracketsOptions</key>
                 <string>foreground underline</string>
-
                 <key>bracketContentsForeground</key>
                 <string>#D3B625</string>
                 <key>bracketContentsOptions</key>

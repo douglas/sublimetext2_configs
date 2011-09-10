@@ -3,8 +3,6 @@
     { "keys": ["super+j"], "command": "code_intel_auto_complete" },
     { "keys": ["super+ctrl+,"], "command": "unexpand_tabs"},
     { "keys": ["super+ctrl+."], "command": "expand_tabs"},
-    { "keys": ["ctrl+,"], "command": "validate" },
     { "keys": ["super+ctrl+alt+left"], "command": "navigation_history_back"},
-    { "keys": ["super+ctrl+alt+right"], "command": "navigation_history_forward"},
-    { "keys": ["ctrl+shift+u"], "command": "web_colors" }
+    { "keys": ["super+ctrl+alt+right"], "command": "navigation_history_forward"}
 ]

@@ -1,38 +1,40 @@
 {
-    "match_brackets": false,
-    "auto_indent": true,
-    "auto_match_enabled": true,
-    "color_scheme": "Packages/User/DouglasCasts.tmTheme",
-    "detect_indentation": false,
-    "draw_minimap_border": true,
-    "ensure_newline_at_eof_on_save": true,
-    "font_face": "UbuntuBeta Mono",
-    "font_options":
-    [
-        "subpixel_antialias"
-    ],
-    "font_size": 16,
-    "gutter": true,
-    "highlight_line": true,
-    "indent_subsequent_lines": true,
-    "pep8_ignore":
-    [
-        //"E302", // Expected two blank lines
-        "E501" // Line too long
-    ],
-    "codeintel_live": true,
-    "rulers":
-    [
-        80
-    ],
-    "sublimelinter": true,
-    "tab_completion": true,
-    "tab_size": 4,
-    "translate_tabs_to_spaces": true,
-    "trim_automatic_white_space": true,
-    "trim_trailing_white_space_on_save": true,
-    "use_tab_stops": true,
-    "word_wrap": false,
-    "codeintel_disabled_languages": ["JavaScript"],
-    "pyflakes_disabled": true
+	"auto_indent": true,
+	"auto_match_enabled": true,
+	"codeintel_disabled_languages":
+	[
+		"JavaScript"
+	],
+	"codeintel_live": true,
+	"color_scheme": "Packages/User/DouglasCasts.tmTheme",
+	"detect_indentation": false,
+	"draw_minimap_border": true,
+	"ensure_newline_at_eof_on_save": true,
+	"font_face": "UbuntuBeta Mono",
+	"font_options":
+	[
+		"subpixel_antialias"
+	],
+	"font_size": 16,
+	"gutter": true,
+	"highlight_line": true,
+	"indent_subsequent_lines": true,
+	"pep8_ignore":
+	[
+		"E501",
+        "W391"
+	],
+	"pyflakes_disabled": true,
+	"rulers":
+	[
+		80
+	],
+	"sublimelinter": true,
+	"tab_completion": true,
+	"tab_size": 4,
+	"translate_tabs_to_spaces": true,
+	"trim_automatic_white_space": true,
+	"trim_trailing_white_space_on_save": true,
+	"use_tab_stops": true,
+	"word_wrap": false
 }

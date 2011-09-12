@@ -6,10 +6,6 @@
 	path = Sniptastic
 	url = https://github.com/bobthecow/sublime-sniptastic.git
 	ignore = untracked 
-[submodule "Django4ST2"]
-	path = Django4ST2
-	url = https://github.com/squ1b3r/Django4ST2.git
-	ignore = untracked 
 [submodule "SublimeCodeIntel"]
 	path = SublimeCodeIntel
 	url = https://github.com/Kronuz/SublimeCodeIntel.git
@@ -29,4 +25,8 @@
 [submodule "GoSublime"]
 	path = GoSublime
 	url = https://github.com/DisposaBoy/GoSublime.git
+	ignore = untracked
+[submodule "Djaneiro"]
+	path = Djaneiro
+	url = https://github.com/squ1b3r/Djaneiro.git
 	ignore = untracked

@@ -6,3 +6,4 @@
 vim/.netrwhist
 vim/sessions
 Base File.sublime-settings
+*.cache

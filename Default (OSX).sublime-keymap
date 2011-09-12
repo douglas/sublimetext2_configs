@@ -4,5 +4,8 @@
     { "keys": ["super+ctrl+,"], "command": "unexpand_tabs"},
     { "keys": ["super+ctrl+."], "command": "expand_tabs"},
     { "keys": ["super+ctrl+alt+left"], "command": "navigation_history_back"},
-    { "keys": ["super+ctrl+alt+right"], "command": "navigation_history_forward"}
+    { "keys": ["super+ctrl+alt+right"], "command": "navigation_history_forward"},
+    { "keys": ["shift+super+,"], "command": "fold" },
+    { "keys": ["alt+."], "command": "close_tag" },
+    { "keys": ["shift+super+."], "command": "unfold" }
 ]

@@ -30,3 +30,7 @@
 	path = Djaneiro
 	url = https://github.com/squ1b3r/Djaneiro.git
 	ignore = untracked
+[submodule "BracketHighlighter"]
+	path = BracketHighlighter
+	url = https://github.com/facelessuser/BracketHighlighter.git
+        ignore = untracked

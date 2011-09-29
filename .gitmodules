@@ -34,3 +34,7 @@
 	path = BracketHighlighter
 	url = https://github.com/facelessuser/BracketHighlighter.git
         ignore = untracked
+[submodule "sublime-text-2-git"]
+	path = sublime-text-2-git
+	url = https://github.com/kemayo/sublime-text-2-git.git
+        ignore = untracked

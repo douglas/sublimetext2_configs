@@ -11,29 +11,26 @@
 	"draw_minimap_border": true,
 	"ensure_newline_at_eof_on_save": true,
 	"font_face": "UbuntuBeta Mono",
-    "scroll_past_end": true,
-    //"font_options":
-    //[
-    //    "subpixel_antialias"
-    //],
-    "font_size": 16,
+	"font_size": 16,
 	"gutter": true,
 	"highlight_line": true,
 	"indent_subsequent_lines": true,
-	"pep8_ignore":
-	[
-		"E501",
-        "E302",  // Two spaces
-        "E261",  // Two spaces for inline comments
-        "E702"   // inline imports
-    //    "W391"
-	],
-	//"pyflakes_disabled": true,
 	"rulers":
 	[
 		80
 	],
-	"sublimelinter": true,
+    "sublimelinter": true,
+    "pep8_ignore":
+    [
+        "E302",
+        "E261",
+        "E702",
+        "E501"
+    ],
+    "pyflakes_ignore":
+    [
+    ],
+	"scroll_past_end": true,
 	"tab_completion": true,
 	"tab_size": 4,
 	"translate_tabs_to_spaces": true,

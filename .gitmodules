@@ -41,3 +41,4 @@
 [submodule "jinja2-tmbundle"]
 	path = jinja2-tmbundle
 	url = https://github.com/mitsuhiko/jinja2-tmbundle.git
+        ignore = untracked

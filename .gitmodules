@@ -38,3 +38,6 @@
 	path = sublime-text-2-git
 	url = https://github.com/kemayo/sublime-text-2-git.git
         ignore = untracked
+[submodule "jinja2-tmbundle"]
+	path = jinja2-tmbundle
+	url = https://github.com/mitsuhiko/jinja2-tmbundle.git

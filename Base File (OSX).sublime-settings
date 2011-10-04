@@ -19,7 +19,7 @@
 	[
 		80
 	],
-    "sublimelinter": true,
+    "sublimelinter": "load-save",
     "pep8_ignore":
     [
         "E302",

@@ -10,17 +10,17 @@ Sublime Text 2.
 
 ## Plugins
 
-* Django for SublimeText 2 (https://github.com/squ1b3r/Djaneiro.git)
-* Sniptastic (https://github.com/bobthecow/sublime-sniptastic.git)
-* Soda Theme (https://github.com/buymeasoda/soda-theme.git)
-* SublimeCodeIntel (https://github.com/Kronuz/SublimeCodeIntel.git)
-* SublimeLinter (https://github.com/Kronuz/SublimeLinter.git)
-* SublimeGitHub (https://github.com/bgreenlee/sublime-github.git)
-* GitST2 (https://github.com/notanumber/gitst2.git)
-* GoSublime (https://github.com/DisposaBoy/GoSublime.git)
-* BracketHighlighter (https://github.com/facelessuser/BracketHighlighter.git)
-* GitHub for SublimeText 2 (https://github.com/kemayo/sublime-text-2-git.git)
-* Jinja2 (https://github.com/mitsuhiko/jinja2-tmbundle.git)
+* Django for SublimeText 2 (https://github.com/squ1b3r/Djaneiro)
+* Sniptastic (https://github.com/bobthecow/sublime-sniptastic)
+* Soda Theme (https://github.com/buymeasoda/soda-theme)
+* SublimeCodeIntel (https://github.com/Kronuz/SublimeCodeIntel)
+* SublimeLinter (https://github.com/Kronuz/SublimeLinter)
+* SublimeGitHub (https://github.com/bgreenlee/sublime-github)
+* GitST2 (https://github.com/notanumber/gitst2)
+* GoSublime (https://github.com/DisposaBoy/GoSublime)
+* BracketHighlighter (https://github.com/facelessuser/BracketHighlighter)
+* GitHub for SublimeText 2 (https://github.com/kemayo/sublime-text-2-git)
+* Jinja2 (https://github.com/mitsuhiko/jinja2-tmbundle)
 ...
 
 ## Instalação

@@ -1,6 +1,6 @@
 # Sublime Text 2 Configuration (en)
 
-
+TODO: Translate the portuguese contents below, sorry.
 
 
 # Configuração do Sublime Text 2 (pt_br)

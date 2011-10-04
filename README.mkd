@@ -10,53 +10,65 @@ Sublime Text 2.
 
 ## Plugins
 
-* Django for SublimeText 2 ()
+* Django for SublimeText 2 (https://github.com/squ1b3r/Djaneiro.git)
 * Sniptastic (https://github.com/bobthecow/sublime-sniptastic.git)
+* Soda Theme (https://github.com/buymeasoda/soda-theme.git)
+* SublimeCodeIntel (https://github.com/Kronuz/SublimeCodeIntel.git)
+* SublimeLinter (https://github.com/Kronuz/SublimeLinter.git)
+* SublimeGitHub (https://github.com/bgreenlee/sublime-github.git)
+* GitST2 (https://github.com/notanumber/gitst2.git)
+* GoSublime (https://github.com/DisposaBoy/GoSublime.git)
+* BracketHighlighter (https://github.com/facelessuser/BracketHighlighter.git)
+* GitHub for SublimeText 2 (https://github.com/kemayo/sublime-text-2-git.git)
+* Jinja2 (https://github.com/mitsuhiko/jinja2-tmbundle.git)
 ...
 
 ## Instalação
 
-* Faça o clone do projeto dentro da pasta ``Packages`` definindo o nome da
+* Faça uma backup da pasta ``User`` e apague-a (iremos clonar as minhas configs)
+
+* Faça o clone desse projeto dentro da pasta ``Packages`` definindo o nome da
 pasta como ``User``:
 
 ```bash
-$ git clone git@github.com:dsarch/sublimetext2_configs.git User
+$ git clone https://douglas@github.com/douglas/sublimetext2_configs.git User
 ```
 
-* Depois faça o download dos submódulos dentro da pasta ``User``:
+* Entre na pasta ``User`` e depois faça o download dos submódulos:
 
 ```bash
+$ cd User
 $ git submodule init
 $ git submodule update
 ```
 
 * Fazer os links simbolicos para os submódulos que estão em User dentro da
-pasta Packages
+pasta Packages (coloquei dessa forma para facilitar o versionamento)
 
 ### osx
 
 ```bash
 $ cd ~/Library/Application Support/Sublime Text 2/Packages
-$ ln -s User/sublime-github .
-$ ln -s User/Sniptastic .
-$ ln -s User/SublimeLinter .
-$ ln -s User/SublimeCodeIntel .
-$ ln -s User/Django4ST2 .
-$ ln -s User/gitst2 .
-$ ln -s "User/Theme - Soda" .
 ```
-
 ### gnu/linux
 
 ```bash
 $ cd ~/.config/sublime-text-2/Packages
-$ ln -s User/sublime-github .
+```
+
+### Criação dos links
+
+```bash
+$ ln -s User/BracketHighlighter .
 $ ln -s User/Sniptastic .
 $ ln -s User/SublimeLinter .
 $ ln -s User/SublimeCodeIntel .
-$ ln -s User/Django4ST2 .
+$ ln -s User/Djaneiro .
 $ ln -s User/gitst2 .
 $ ln -s "User/Theme - Soda" .
+$ ln -s User/jinja2-tmbundle Jinja2
+$ ln -s User/sublime-github .
+$ ln -s User/sublime-text-2-git Git
 ```
 
 * Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:
@@ -71,3 +83,33 @@ acordo com sua plataforma (OSX ou Linux):
 ```bash
 $ ln -s "Base File (<plataforma>).sublime-settings" "Base File.sublime-settings"
 ```
+
+* Para utilizar o SublimeCodeIntel, execute os seguintes comandos:
+
+```bash
+$ mkdir ~/.codeintel
+$ touch ~/.codeintel/config
+```
+
+* Edite o arquivo ``~/.codeintel/config`` e coloque algo assim:
+
+```json
+{
+    "Python": {
+        "python": '/Users/douglas/work/ambientes/django/bin/python',
+        "pythonExtraPaths": ['/Users/douglas/work/ambientes/django/lib/python2.7/site-packages',
+                             '/usr/local/Cellar/python/2.7.2/lib/python2.7/site-packages',
+                             '/Users/douglas/work/sid/devel',
+                             '/Users/douglas/work/sid/devel/apps_logicas',
+                             '/Users/douglas/work/sid/devel/contrib',
+                             '/Users/douglas/work/sid/devel/sid',
+                             '/Users/douglas/work/sid/devel/sid/apps'
+        ]
+    },
+
+}
+```
+
+Em ``python``, você precisa definir o caminho do interpretador que você irá usar,
+em ``pythonExtraPaths`` os caminhos onde teus módulos e sistemas estão
+instalados (para usar o autocomplete e go_to_definition)

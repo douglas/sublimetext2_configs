@@ -5,7 +5,7 @@
 	//[
 	//	"JavaScript"
 	//],
-	"codeintel_live": false,
+	"codeintel_live": true,
 	"color_scheme": "Packages/User/DouglasCasts.tmTheme",
 	"detect_indentation": false,
 	"draw_minimap_border": true,

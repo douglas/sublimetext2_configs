@@ -1,27 +1,23 @@
 [submodule "Theme - Soda"]
 	path = Theme - Soda
 	url = https://github.com/buymeasoda/soda-theme.git
-	ignore = untracked 
+	ignore = untracked
 [submodule "Sniptastic"]
 	path = Sniptastic
 	url = https://github.com/bobthecow/sublime-sniptastic.git
-	ignore = untracked 
+	ignore = untracked
 [submodule "SublimeCodeIntel"]
 	path = SublimeCodeIntel
 	url = https://github.com/Kronuz/SublimeCodeIntel.git
-	ignore = untracked 
+	ignore = untracked
 [submodule "SublimeLinter"]
 	path = SublimeLinter
 	url = https://github.com/Kronuz/SublimeLinter.git
-	ignore = untracked 
+	ignore = untracked
 [submodule "sublime-github"]
 	path = sublime-github
 	url = https://github.com/bgreenlee/sublime-github.git
-	ignore = untracked 
-[submodule "gitst2"]
-	path = gitst2
-	url = https://github.com/notanumber/gitst2.git
-	ignore = untracked 
+	ignore = untracked
 [submodule "GoSublime"]
 	path = GoSublime
 	url = https://github.com/DisposaBoy/GoSublime.git

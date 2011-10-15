@@ -16,7 +16,6 @@ Sublime Text 2.
 * SublimeCodeIntel (https://github.com/Kronuz/SublimeCodeIntel)
 * SublimeLinter (https://github.com/Kronuz/SublimeLinter)
 * SublimeGitHub (https://github.com/bgreenlee/sublime-github)
-* GitST2 (https://github.com/notanumber/gitst2)
 * GoSublime (https://github.com/DisposaBoy/GoSublime)
 * BracketHighlighter (https://github.com/facelessuser/BracketHighlighter)
 * GitHub for SublimeText 2 (https://github.com/kemayo/sublime-text-2-git)
@@ -33,6 +32,19 @@ pasta como ``User``:
 ```bash
 $ git clone https://douglas@github.com/douglas/sublimetext2_configs.git User
 ```
+
+## Setup automático
+
+O @santagada fez um shellscript para facilitar a instalação, prefira executá-lo
+ser for a primeira vez que você usa essas configurações
+
+```bash
+$ sh setup.sh
+```
+
+Isso deve bastar =)
+
+## Setup manual
 
 * Entre na pasta ``User`` e depois faça o download dos submódulos:
 
@@ -64,18 +76,21 @@ $ ln -s User/Sniptastic .
 $ ln -s User/SublimeLinter .
 $ ln -s User/SublimeCodeIntel .
 $ ln -s User/Djaneiro .
-$ ln -s User/gitst2 .
 $ ln -s "User/Theme - Soda" .
 $ ln -s User/jinja2-tmbundle Jinja2
 $ ln -s User/sublime-github .
 $ ln -s User/sublime-text-2-git Git
 ```
 
-* Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:
+## Atualização dos submódulos
+
+Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:
 
 ```bash
 $ git submodule foreach git pull origin master
 ```
+
+## Configurações do sistema
 
 * Crie um link simbólico para que as configuracoes gerais sejam vistas. Faça de
 acordo com sua plataforma (OSX ou Linux):
@@ -83,6 +98,8 @@ acordo com sua plataforma (OSX ou Linux):
 ```bash
 $ ln -s "Base File (<plataforma>).sublime-settings" "Base File.sublime-settings"
 ```
+
+## Configuração do SublimeCodeIntel (autocomplete e go to definition)
 
 * Para utilizar o SublimeCodeIntel, execute os seguintes comandos:
 

@@ -20,13 +20,13 @@
 		80
 	],
     "sublimelinter": "load-save",
-    "pep8_ignore":
-    [
-        "E302",
-        "E261",
-        "E702",
-        "E501"
-    ],
+    // "pep8_ignore":
+    // [
+    //     "E302",
+    //     "E261",
+    //     "E702",
+    //     "E501"
+    // ],
     "pyflakes_ignore":
     [
     ],

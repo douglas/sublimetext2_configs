@@ -5,7 +5,7 @@
     "square_enable": true,
     "angle_enable" : true,
 
-    //Outline? (solid/outline/underline) ->
+    //Outline? (solid/outline/underline/none) ->
     "quote_style" : "none",
     "curly_style" : "none",
     "round_style" : "none",

@@ -1,12 +1,15 @@
 {
-    "quote_enable" : false,
-    "curly_enable" : false,
+    "quote_enable" : true,
+    "curly_enable" : true,
     "round_enable" : true,
     "square_enable": true,
     "angle_enable" : true,
-    "quote_style" : "outline",
-    "curly_style" : "outline",
-    "round_style" : "outline",
-    "square_style": "outline",
-    "angle_style" : "outline"
+
+    //Outline? (solid/outline/underline) ->
+    "quote_style" : "none",
+    "curly_style" : "none",
+    "round_style" : "none",
+    "square_style": "none",
+    "angle_style" : "none",
+    "tag_style"   : "outline"
 }

@@ -1,16 +1,8 @@
-#!/usr/bin/env python
 #coding: utf8
 #################################### IMPORTS ###################################
 
 # Std Libs
-import os
-import sys
-import re
-import random
-import time
-import copy
-
-import logging
+import operator
 
 # Sublime Libs
 import sublime
@@ -26,9 +18,9 @@ from dynamicsnippets import CommandsAsYouTypeBase
 import zencoding
 import zencoding.actions
 
-from sublimezen import ( css_snippets, decode, expand_abbr, editor, css_sorted,
-                         css_property_values, multi_selectable, CSS_PROP,
-                         find_css_property, find_tag_start, find_tag_name,
+from sublimezen import ( expand_abbr, editor, css_sorted,
+                         css_property_values, multi_selectable,
+                         find_css_property, find_tag_name,
                          find_attribute_name, css_prefixer, find_css_selector)
 
 from zenmeta    import ( CSS_PROP_VALUES, HTML_ELEMENTS_ATTRIBUTES,
@@ -42,7 +34,10 @@ HTML                      = 'text.html - source'
 XML                       = 'text.xml'
 
 HTML_INSIDE_TAG_ANYWHERE  = 'text.html meta.tag'
-HTML_INSIDE_TAG           = 'text.html meta.tag - string - meta.scope.between-tag-pair.html -punctuation.definition.tag.begin.html'
+HTML_INSIDE_TAG           = ( 'text.html meta.tag - string - '
+                              'meta.scope.between-tag-pair.html '
+                              '-punctuation.definition.tag.begin.html')
+
 HTML_INSIDE_TAG_ATTRIBUTE = 'text.html meta.tag string'
 
 HTML_NOT_INSIDE_TAG       = 'text.html - meta.tag'
@@ -51,7 +46,7 @@ CSS          = 'source.css, source.scss'
 CSS_PROPERTY = 'meta.property-list.css - meta.property-value.css'
 CSS_SELECTOR = 'meta.selector.css, source.css - meta, source.scss - meta'
 
-CSS_PROPERTY_NAME =  u'meta.property-list.css meta.property-name.css'
+CSS_PROPERTY_NAME =  'meta.property-list.css meta.property-name.css'
 
 CSS_PREFIXER = 'meta.property-list.css, meta.selector.css'
 CSS_VALUE    = 'meta.property-list.css meta.property-value.css'
@@ -74,25 +69,31 @@ __authors__     = ['"Sergey Chikuyonok" <serge.che@gmail.com>'
 
 zen_settings = sublime.load_settings('zen-coding.sublime-settings')
 
+
+OPMAP = {
+    sublime.OP_EQUAL     : operator.eq,
+    sublime.OP_NOT_EQUAL : operator.ne,
+}
+
+def eval_op(op, operand, operand2):
+    return OPMAP[op](operand, operand2)
+
+class ZenSettings(sublime_plugin.EventListener):
+    def on_query_context(self, view, key, op, operand, match_all):
+        if key.startswith('zen_setting'):
+            return eval_op(op, operand, zen_settings.get(key.split('.')[1]))
+
 ##################################### TODO #####################################
 """
 
-Don't do valid_tag checking for as you type, only for `insert_best_completion`
-Should be able to use as you type for anything, including <xml:namespaces />
+Anything referencing `css_sorted` should be updated to be recalculated on zen-
+codings.sublime-settings change)
 
-valid_tag checking should possibly check for abbreviations eg.
-    
-    "my_zen_settings" : {
-        "html": {
-            "abbreviations": {
-                "jq": "<script src='jquery.js' type='javascript'>",
-                "demo": "<div id=\"demo\"></div>"
-            }
-       }
+Installation Docs
+    OSX
+    Windows
+    Linux
 
-There should be a setting to disable contextual completions
-
-Installation
 """
 #################################### LOGGING ###################################
 
@@ -117,50 +118,61 @@ def load_settings(force_reload=False):
 
 load_settings()
 
+if int(sublime.version()) >= 2092:
+    zen_settings.clear_on_change('zen_coding')
+    zen_settings.add_on_change('zen_coding',
+                               lambda: load_settings(force_reload=1))
+
 ######################## REMOVE HTML/HTML_COMPLETIONS.PY #######################
 
 def remove_html_completions():
     try:
         import html_completions
-        html_completions.HtmlCompletions
+        hc = html_completions.HtmlCompletions
     except (ImportError, AttributeError):
         debug('Unable to find `html_completions.HtmlCompletions`')
         return
 
     completions = sublime_plugin.all_callbacks['on_query_completions']
-
-    for i, h in enumerate(completions):
-        if isinstance(h, html_completions.HtmlCompletions):
+    for i, instance in enumerate (completions):
+        if isinstance(instance, hc):
+            debug('on_query_completion: removing: %s' % hc)
             del completions[i]
 
-    debug('on_query_completion: %r' % completions)
+    debug('on_query_completion: callbacks: %r' % completions)
 
-sublime.set_timeout(remove_html_completions, 1)
+sublime.set_timeout(remove_html_completions, 2000)
 
 ########################## DYNAMIC ZEN CODING SNIPPETS #########################
 
+
 class ZenAsYouType(CommandsAsYouTypeBase):
+    default_input = 'div'
     input_message = "Enter Koan: "
 
     def filter_input(self, abbr):
         try:
-            return expand_abbr(abbr)
-        except ZenInvalidAbbreviation:
+            return expand_abbr(abbr, super_profile='no_check_valid')
+        except Exception:
             "dont litter the console"
 
 class WrapZenAsYouType(CommandsAsYouTypeBase):
+    default_input = 'div'
     input_message = "Enter Haiku: "
 
     def run_command(self, view, cmd_input):
         try:
-            ex = expand_abbr(cmd_input)
-            if not ex: raise ZenInvalidAbbreviation('Empty expansion %r' % r)
-        except ZenInvalidAbbreviation, e:
+            ex = expand_abbr(cmd_input, super_profile='no_check_valid')
+            p  = editor.get_profile_name() + '.no_check_valid'
+            if not ex.strip():
+                raise ZenInvalidAbbreviation('Empty expansion %r' % ex)
+        except Exception:
             return False
 
         view.run_command (
             'run_zen_action',
-            dict(action="wrap_with_abbreviation", abbr=cmd_input) )
+            dict(action="wrap_with_abbreviation",
+            abbr=cmd_input, profile_name=p))
 
 ################################ RUN ZEN ACTION ################################
 
@@ -266,7 +278,10 @@ class ZenListener(sublime_plugin.EventListener):
         return [(prefix, '@=' + v, v) for v in values]
 
     def on_query_completions(self, view, prefix, locations):
-        if not self.correct_syntax(view): return []
+        if ( not self.correct_syntax(view) or
+             zen_settings.get('disable_completions', False) ): return []
+
+        black_list = zen_settings.get('completions_blacklist', [])
 
         # We need to use one function rather than discrete listeners so as to
         # avoid pollution with less specific completions. Try to return early
@@ -290,9 +305,11 @@ class ZenListener(sublime_plugin.EventListener):
         # Try to find some more specific contextual abbreviation
         for root_selector, sub_selectors in COMPLETIONS:
             for sub_selector, handler in sub_selectors:
+                h_name = handler.__name__
+                if h_name in black_list: continue
                 if view.match_selector(pos,  sub_selector):
 
-                    c = handler.__name__, prefix
+                    c = h_name, prefix
                     oq_debug('handler: %r prefix: %r' % c)
                     oq_debug('pos: %r scope: %r' % (pos, view.syntax_name(pos)))
 
@@ -311,7 +328,7 @@ class ZenListener(sublime_plugin.EventListener):
 
                 if result:
                     return [
-                        (abbr, result if '<' not in result else abbr, result)]
+                        (abbr, abbr, result)]
 
         except ZenInvalidAbbreviation:
             pass
@@ -322,7 +339,9 @@ class ZenListener(sublime_plugin.EventListener):
         # TODO, before or after this, fuzz directly against the zen snippets
         # eg  `tjd` matching `tj:d` to expand `text-justify:distribute;`
 
-        if view.match_selector(pos, CSS_PROPERTY):
+        if ( view.match_selector(pos, CSS_PROPERTY) and
+             not 'css_properties' in black_list ):
+
             # Use this to get non \w based prefixes
             prefix     = css_prefixer(view, pos)
             properties = sorted(CSS_PROP_VALUES.keys())
@@ -363,13 +382,6 @@ class ZenListener(sublime_plugin.EventListener):
                 debug('is_zen context disabled')
                 return False
 
-    def on_post_save(self, view):
-        fn = view.file_name()
-
-        if fn and fn.endswith('zen-coding.sublime-settings'):
-            # Seems to take a bit of time for settings to be reloaded
-            sublime.set_timeout(lambda: load_settings(force_reload=True), 1000)
-
 ################################################################################
 
 class SetHtmlSyntaxAndInsertSkel(sublime_plugin.TextCommand):
@@ -378,7 +390,6 @@ class SetHtmlSyntaxAndInsertSkel(sublime_plugin.TextCommand):
         syntax   = zen_settings.get( 'default_html_syntax',
                                      'Packages/HTML/HTML.tmlanguage' )
         view.set_syntax_file(syntax)
-
         view.run_command( 'insert_snippet',
                           {'contents': expand_abbr('html:%s' % doctype)} )
 

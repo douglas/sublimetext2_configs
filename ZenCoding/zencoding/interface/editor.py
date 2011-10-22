@@ -26,14 +26,16 @@ def active_view():
 ################################################################################
 
 class ZenEditor():
-    def expand_abbr(self, abbr, syntax = None, selection=True):
+    def expand_abbr(self, abbr, syntax = None, selection=True, 
+                                               super_profile=None):
 
         syntax       = syntax or self.get_syntax()
         profile_name = self.get_profile_name()
+
+        if super_profile: profile_name += '.%s' % super_profile
         content      = expand_abbreviation(abbr, syntax, profile_name)
 
-        return ( self.add_placeholders(content, selection=selection)
-                     .decode('utf8', 'ignore') )
+        return ( self.add_placeholders(content, selection=selection) )
 
     def __init__(self):
         pass
@@ -55,7 +57,9 @@ class ZenEditor():
         start, end = zen_editor.get_selection_range();
         print('%s, %s' % (start, end))
         """
-        return eval(repr(active_view().sel()[0]))
+        view = active_view()
+        sel = view.sel()[0]
+        return sel.begin(), sel.end()
 
     def create_selection(self, start=None, end=None, sels=[]):
         """
@@ -146,6 +150,7 @@ class ZenEditor():
 
         self.create_selection(start, end)
 
+        value = value.replace('$', r'\$')
         value = self.add_placeholders(value, selection=0, explicit_zero=zero_stops)
 
         if '\n' in value:

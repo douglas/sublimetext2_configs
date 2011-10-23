@@ -1,141 +1,159 @@
 # Sublime Text 2 Configuration (en)
 
-TODO: Translate the portuguese contents below, sorry.
-
-
-# Configuração do Sublime Text 2 (pt_br)
-
-Esse projeto armazena as minhas configurações e os plugins que eu uso no
-Sublime Text 2.
+This repository contains my Sublime Text 2 configurations.
 
 ## Plugins
+
+Here are the plugins im using:
 
 * Django for SublimeText 2 (https://github.com/squ1b3r/Djaneiro)
 * Sniptastic (https://github.com/bobthecow/sublime-sniptastic)
 * Soda Theme (https://github.com/buymeasoda/soda-theme)
 * SublimeCodeIntel (https://github.com/Kronuz/SublimeCodeIntel)
 * SublimeLinter (https://github.com/Kronuz/SublimeLinter)
-* SublimeGitHub (https://github.com/bgreenlee/sublime-github)
-* GoSublime (https://github.com/DisposaBoy/GoSublime)
+* Github GISTs (https://github.com/bgreenlee/sublime-github)
 * BracketHighlighter (https://github.com/facelessuser/BracketHighlighter)
 * GitHub for SublimeText 2 (https://github.com/kemayo/sublime-text-2-git)
-* Jinja2 (https://github.com/mitsuhiko/jinja2-tmbundle)
 * ZenCoding (https://bitbucket.org/sublimator/sublime-2-zencoding)
-...
 
-## Instalação
+You can install the above plugins you can use PackageControl default repository
+channel, for the ones bellow:
 
-* Faça uma backup da pasta ``User`` e apague-a (iremos clonar as minhas configs)
+* Jinja2 (https://github.com/mitsuhiko/jinja2-tmbundle)
+* GoSublime (https://github.com/DisposaBoy/GoSublime)
 
-* Faça o clone desse projeto dentro da pasta ``Packages`` definindo o nome da
-pasta como ``User``:
+You need to use (for now) my repository channel file:
 
-```bash
-$ git clone https://douglas@github.com/douglas/sublimetext2_configs.git User
+```
+https://raw.github.com/douglas/package_control_channel/master/repositories.json
 ```
 
-## Setup automático
+## How to use it
 
-O @santagada fez um shellscript para facilitar a instalação, prefira executá-lo
-ser for a primeira vez que você usa essas configurações
+* In fact, you just have to look at the files and adapt your own files to
+  my configs =)
 
-```bash
-$ sh setup.sh
-```
+## System configurations
 
-Isso deve bastar =)
-
-## Setup manual
-
-* Entre na pasta ``User`` e depois faça o download dos submódulos:
+* Note that i do not have a "Base File.sublime-settings" in the repository,
+  instead, i have config files for each architecture - so you just need to
+  do a symbolic link of the platform file to the "Base File.sublime-settings"
+  file:
 
 ```bash
-$ cd User
-$ git submodule init
-$ git submodule update
+$ ln -s "Base File (<plataform>).sublime-settings" "Base File.sublime-settings"
 ```
 
-* Fazer os links simbolicos para os submódulos que estão em User dentro da
-pasta Packages (coloquei dessa forma para facilitar o versionamento)
+## SublimeCodeIntel configuration (autocomplete and go to definition)
 
-### osx
-
-```bash
-$ cd ~/Library/Application Support/Sublime Text 2/Packages
-```
-### gnu/linux
-
-```bash
-$ cd ~/.config/sublime-text-2/Packages
-```
-
-### Criação dos links
-
-```bash
-$ ln -s User/BracketHighlighter .
-$ ln -s User/Sniptastic .
-$ ln -s User/SublimeLinter .
-$ ln -s User/SublimeCodeIntel .
-$ ln -s User/Djaneiro .
-$ ln -s "User/Theme - Soda" .
-$ ln -s User/jinja2-tmbundle Jinja2
-$ ln -s User/sublime-github .
-$ ln -s User/sublime-text-2-git Git
-```
-
-### ZenCoding
-
-O ZenCoding está hospedado em um repositório Mercurial, portanto para
-atualizá-lo basta executar o seguinte comando:
-
-$ cd ZenCoding
-$ hg pull -u
-
-## Atualização dos submódulos
-
-Para atualizar todos os submódulos de uma só vez, execute o seguinte comando:
-
-```bash
-$ git submodule foreach git pull origin master
-```
-
-## Configurações do sistema
-
-* Crie um link simbólico para que as configuracoes gerais sejam vistas. Faça de
-acordo com sua plataforma (OSX ou Linux):
-
-```bash
-$ ln -s "Base File (<plataforma>).sublime-settings" "Base File.sublime-settings"
-```
-
-## Configuração do SublimeCodeIntel (autocomplete e go to definition)
-
-* Para utilizar o SublimeCodeIntel, execute os seguintes comandos:
+* To use SublimeCodeIntel, install it using @wbond Package Control and do
+  the following:
 
 ```bash
 $ mkdir ~/.codeintel
 $ touch ~/.codeintel/config
 ```
 
-* Edite o arquivo ``~/.codeintel/config`` e coloque algo assim:
+* Edit the file ``~/.codeintel/config`` e put something like this:
 
 ```json
 {
     "Python": {
-        "python": '/Users/douglas/work/ambientes/django/bin/python',
-        "pythonExtraPaths": ['/Users/douglas/work/ambientes/django/lib/python2.7/site-packages',
-                             '/usr/local/Cellar/python/2.7.2/lib/python2.7/site-packages',
-                             '/Users/douglas/work/sid/devel',
-                             '/Users/douglas/work/sid/devel/apps_logicas',
-                             '/Users/douglas/work/sid/devel/contrib',
-                             '/Users/douglas/work/sid/devel/sid',
-                             '/Users/douglas/work/sid/devel/sid/apps'
+        "python": '/your/python/interpreter/directory/bin/python',
+        "pythonExtraPaths": ['/the/root/of/your/project/directory/',
+                             '/another/root/of/your/project/directory/',
         ]
     },
-
 }
 ```
 
-Em ``python``, você precisa definir o caminho do interpretador que você irá usar,
-em ``pythonExtraPaths`` os caminhos onde teus módulos e sistemas estão
-instalados (para usar o autocomplete e go_to_definition)
+In the ``python``, you need to define the path to the interpreter that you want
+to use (virtualenv interpreter works too), in ``pythonExtraPaths`` you may want
+to put the path of your projects (to use autocomplete and go_to_definition)
+
+# Configurações do Sublime Text 2 (pt-br)
+
+Esse repositório contém as minhas configurações do Sublime Text 2.
+
+## Plugins
+
+Esses são os plugins que estou usando:
+
+* Django for SublimeText 2 (https://github.com/squ1b3r/Djaneiro)
+* Sniptastic (https://github.com/bobthecow/sublime-sniptastic)
+* Soda Theme (https://github.com/buymeasoda/soda-theme)
+* SublimeCodeIntel (https://github.com/Kronuz/SublimeCodeIntel)
+* SublimeLinter (https://github.com/Kronuz/SublimeLinter)
+* Github GISTs (https://github.com/bgreenlee/sublime-github)
+* BracketHighlighter (https://github.com/facelessuser/BracketHighlighter)
+* GitHub for SublimeText 2 (https://github.com/kemayo/sublime-text-2-git)
+* ZenCoding (https://bitbucket.org/sublimator/sublime-2-zencoding)
+
+Você pode instalar os plugins acima utilizando o canal de repositórios padrão
+do PackageControl. Para os plugins abaixo:
+
+* Jinja2 (https://github.com/mitsuhiko/jinja2-tmbundle)
+* GoSublime (https://github.com/DisposaBoy/GoSublime)
+
+Você precisa utilizar (por agora) o meu canal de repositórios:
+
+```
+https://raw.github.com/douglas/package_control_channel/master/repositories.json
+```
+
+## Como utilizar
+
+* Você precisa apenar olhar os arquivos de configuração e adaptá-los para as
+  suas necessidades =)
+
+## Configurações do sistema
+
+* Observe que não tenho um arquivo "Base File.sublime-settings" nesse
+  repositório, ao invés disso, eu tenho arquivos de configuração para cada
+  arquitetura - você só precisa criar um link simbólico do arquivo da sua
+  plataforma para: "Base File.sublime-settings":
+
+```bash
+$ ln -s "Base File (<plataform>).sublime-settings" "Base File.sublime-settings"
+```
+
+## Configurações do SublimeCodeIntel (autocomplete e go to definition)
+
+* Para utilizar SublimeCodeIntel, instale-o utilizando Package Control do
+  @wbond e faça o seguinte:
+
+```bash
+$ mkdir ~/.codeintel
+$ touch ~/.codeintel/config
+```
+
+* Altere o arquivo ``~/.codeintel/config`` e coloque algo como:
+
+```json
+{
+    "Python": {
+        "python": '/seu/diretorio/do/interpretador/python/bin/python',
+        "pythonExtraPaths": ['/a/raiz/do/seu/diretorio/de/projeto/',
+                             '/outra/raiz/do/seu/diretorio/de/projeto/',
+        ]
+    },
+}
+```
+
+Para a chave ``python``, defina o caminho para o interpretador que você deseja
+utilizar (pode ser virtualenv), em ``pythonExtraPaths`` você pode colocar
+o caminho do seu projeto (para utilizar autocomplete e go_to_definition)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

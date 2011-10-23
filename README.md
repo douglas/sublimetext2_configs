@@ -20,6 +20,7 @@ Sublime Text 2.
 * BracketHighlighter (https://github.com/facelessuser/BracketHighlighter)
 * GitHub for SublimeText 2 (https://github.com/kemayo/sublime-text-2-git)
 * Jinja2 (https://github.com/mitsuhiko/jinja2-tmbundle)
+* ZenCoding (https://bitbucket.org/sublimator/sublime-2-zencoding)
 ...
 
 ## Instalação
@@ -81,6 +82,14 @@ $ ln -s User/jinja2-tmbundle Jinja2
 $ ln -s User/sublime-github .
 $ ln -s User/sublime-text-2-git Git
 ```
+
+### ZenCoding
+
+O ZenCoding está hospedado em um repositório Mercurial, portanto para
+atualizá-lo basta executar o seguinte comando:
+
+$ cd ZenCoding
+$ hg pull -u
 
 ## Atualização dos submódulos
 

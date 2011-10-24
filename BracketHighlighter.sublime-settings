@@ -11,5 +11,5 @@
     "round_style" : "none",
     "square_style": "none",
     "angle_style" : "none",
-    "tag_style"   : "outline"
+    "tag_style"   : "none"
 }

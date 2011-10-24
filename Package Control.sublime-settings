@@ -1,6 +1,7 @@
 {
-	"auto_upgrade_last_run": 1319321985,
-	"repository_channels": [
+	"auto_upgrade_last_run": 1319429693,
+	"repository_channels":
+	[
 		"http://sublime.wbond.net/repositories.json",
 		"https://raw.github.com/douglas/package_control_channel/master/repositories.json"
 	]

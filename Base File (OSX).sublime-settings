@@ -1,12 +1,8 @@
 {
 	"auto_indent": true,
 	"auto_match_enabled": true,
-	//"codeintel_disabled_languages":
-	//[
-	//	"JavaScript"
-	//],
 	"codeintel_live": false,
-	"color_scheme": "Packages/User/DouglasCasts.tmTheme",
+	"color_scheme": "Packages/User/idleFingers.tmTheme",
 	"detect_indentation": false,
 	"draw_minimap_border": true,
 	"ensure_newline_at_eof_on_save": true,
@@ -15,22 +11,15 @@
 	"gutter": true,
 	"highlight_line": true,
 	"indent_subsequent_lines": true,
+	"pyflakes_ignore":
+	[
+	],
 	"rulers":
 	[
 		80
 	],
-    "sublimelinter": "load-save",
-    // "pep8_ignore":
-    // [
-    //     "E302",
-    //     "E261",
-    //     "E702",
-    //     "E501"
-    // ],
-    "pyflakes_ignore":
-    [
-    ],
 	"scroll_past_end": true,
+	"sublimelinter": "load-save",
 	"tab_completion": true,
 	"tab_size": 4,
 	"translate_tabs_to_spaces": true,
